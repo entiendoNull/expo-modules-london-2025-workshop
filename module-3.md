@@ -520,3 +520,5 @@ export default function App() {
   );
 }
 ```
+
+<img width="1282" height="785" alt="image" src="https://github.com/user-attachments/assets/3abb3f32-99a4-4421-a372-c7d63947c030" />
