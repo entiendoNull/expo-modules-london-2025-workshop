@@ -43,6 +43,10 @@ public class ExpoAudioRouteModule: Module {
     OnStopObserving("onAudioRouteChange")  {
       self.stopObservingRouteChanges()
     }
+
+    // Registers `ExpoAudioRouteView` as a native view component provided by this module
+    // Because we used the `@Field` property in the SwiftUI view, we don't need to declare any props here
+    View(ExpoAudioRouteView.self)
   }
 
   // Registers an observer with NotificationCenter to monitor AVAudioSession route changes.
