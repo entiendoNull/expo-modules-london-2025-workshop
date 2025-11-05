@@ -211,7 +211,7 @@ await ExpoAudioRoute.getCurrentRouteAsync();
 
 This will return one of the strings declared in our `AudioRoute` type: `"speaker"`, `"wiredHeadset"`, `"bluetooth"`, or `"unknown"`.
 
-#### 3. Implement the native functionality
+## Exercise 2: Implement native functionality in Swift and/or Kotlin
 
 Choose your platform(s) and implement the audio route detection:
 
@@ -220,7 +220,7 @@ Choose your platform(s) and implement the audio route detection:
 
 **File:** `modules/expo-audio-route/ios/ExpoAudioRouteModule.swift`
 
-#### 3.1 Imports
+#### 2.1 Imports
 
 First, import `AVFoundation`. This is Apple's framework for working with audio and video; we need it to access the `AVAudioSession` API, which lets us query the device's current audio routing information.
 
@@ -229,7 +229,7 @@ import ExpoModulesCore
 +import AVFoundation
 ```
 
-#### 3.2 Add private method `currentRoute`
+#### 2.2 Add private method `currentRoute`
 
 Next, create a helper method called `currentRoute()`. This method should be placed outside of your `ModuleDefinition` (as a private method of the class).
 
@@ -258,7 +258,7 @@ private func currentRoute() -> String {
 
 This method checks the audio session's current output and returns a string matching our `AudioRoute` type based on the port type.
 
-#### 3.3 Create async function to query for audio route
+#### 2.3 Create async function to query for audio route
 
 Finally, expose this functionality to JavaScript by adding an `AsyncFunction` called `getCurrentRouteAsync`. This should be placed _within_ your `ModuleDefinition`, right below `Name("ExpoAudioRoute")`.
 
@@ -275,7 +275,7 @@ AsyncFunction("getCurrentRouteAsync") {
 
 **File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt`
 
-#### 3.1 Imports
+#### 2.1 Imports
 
 Start by adding the necessary Android imports. We need `Context` to access system services, `AudioDeviceInfo` to identify audio device types, and `AudioManager` to query the audio routing information.
 
@@ -289,7 +289,7 @@ import expo.modules.kotlin.modules.ModuleDefinition
 +import android.media.AudioManager
 ```
 
-#### 3.2 Initialize the `AudioManager`
+#### 2.2 Initialize the `AudioManager`
 
 Add a property to hold a reference to the `AudioManager`. This should be declared outside of your `ModuleDefinition` as a private class property.
 
@@ -305,7 +305,7 @@ OnCreate {
 }
 ```
 
-#### 3.3 Add private method `currentRoute`
+#### 2.3 Add private method `currentRoute`
 
 Next, create a helper method called `currentRoute()`. This method should be placed outside of your `ModuleDefinition` (as a private method of the class).
 
@@ -347,7 +347,7 @@ private fun currentRoute(): String {
 
 This method queries all connected audio output devices and checks them in priority order (wired first, then Bluetooth, then built-in speaker), returning a string that matches our `AudioRoute` type.
 
-#### 3.4 Create async function to query for audio route
+#### 2.4 Create async function to query for audio route
 
 Finally, expose this functionality to JavaScript by adding an `AsyncFunction` called `getCurrentRouteAsync`. This should be placed _within_ your `ModuleDefinition`, right below `Name("ExpoAudioRoute")`.
 
@@ -359,7 +359,7 @@ AsyncFunction("getCurrentRouteAsync") {
 
 </details>
 
-## Exercise 2: Build and test the audio route detector
+## Exercise 3: Build and test the audio route detector
 
 Now that we've implemented the native code, it's time to build and test our module on a real device!
 
