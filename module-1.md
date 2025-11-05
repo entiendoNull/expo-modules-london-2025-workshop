@@ -134,7 +134,9 @@ Now add a second `<Text>` component that calls the `hello()` function:
 <Text>{ExpoAudioRoute.hello()}</Text>
 ```
 
-> ✨ **Try it:**
+> [!NOTE]
+>
+> 👀 **Try it:**
 > Save your changes and check your app. You should see:
 >
 > 3.14159
@@ -222,7 +224,9 @@ The example module requires us to manually trigger the `onChange` event. Add a b
 />
 ```
 
-> ✨ **Try it:**
+> [!NOTE]
+>
+> 👀 **Try it:**
 > Save your changes and check your app. You should now see a "Click Me" button. When you press it, an alert should appear with the title "Event received" and "Hello World" as its message.
 
 <details>
@@ -311,9 +315,11 @@ Add a `style` prop with explicit width and height:
 />
 ```
 
-> ✨ **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page > finishes loading.
+> [!NOTE]
 >
-> **Try changing the `url` prop** to a different website (like `"https://reactnative.dev"`) and save. The WebView should update to show the new site.
+> 👀 **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page > finishes loading.
+>
+> 👀 **Try changing the `url` prop** to a different website (like `"https://reactnative.dev"`) and save. The WebView should update to show the new site.
 
 <details>
 <summary>Full solution</summary>
@@ -436,7 +442,9 @@ Function("hello") {
 
 > [!NOTE]
 >
-> 1. Save the file and try to consume the the new goodbye function.
+> 👀 **Try it**
+>
+> 1. Save the file and try to consume the the new `goodbye` function.
 >
 > 2. Remember to rebuild after native changes: `npx expo run:ios` or `npx expo run:android`. Now you should be able to run the app.
 
@@ -522,7 +530,9 @@ npx expo run:android
 + />
 ```
 
-> ✨ **Try it:** After the rebuild completes and your app launches, press the "Hello from JS!" button. Check your console/logs - after a 1-second delay, you should see: `Hello from JS! And hello from native code!`
+> [!NOTE]
+>
+> 👀 **Try it:** After the rebuild completes and your app launches, press the "Hello from JS!" button. Check your console/logs - after a 1-second delay, you should see: `Hello from JS! And hello from native code!`
 
 ## Exercise 6: Build from Xcode / Android Studio
 
@@ -575,4 +585,6 @@ Alternatively, open Android Studio manually and select "Open" → navigate to th
 1. Select an emulator from the device dropdown at the top
 2. Press `Ctrl + R` or click the Run button to build and run
 
-✨ **Try it:** Your app should build and launch from the native IDE. You can now set breakpoints in your native code, view native logs, and debug just like any native app. Try adding a breakpoint in the `goodbye()` function and calling it from your app!
+> [!NOTE]
+>
+> 👀 **Try it:** Your app should build and launch from the native IDE. You can now set breakpoints in your native code, view native logs, and debug just like any native app. Try adding a breakpoint in the `goodbye()` function and calling it from your app!
