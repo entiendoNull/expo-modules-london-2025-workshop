@@ -28,6 +28,12 @@ class ExpoAudioRouteModule : Module() {
     // Declares an event that JavaScript can subscribe to for audio route change notifications.
     Events("onAudioRouteChange")
 
+    // Registers `ExpoAudioRouteView` as a native view component provided by this module
+    // Unlike SwiftUI, we do need to declare any event callbacks here
+    View(ExpoAudioRouteView::class) {
+      Events("onOptionChange")
+    }
+
     // Module lifecycle callback that executes when the module is created.
     // Initializes the audioManager by retrieving the AUDIO_SERVICE from the Android system services.
     // This ensures the AudioManager is available for all audio routing queries throughout the module's lifetime.
