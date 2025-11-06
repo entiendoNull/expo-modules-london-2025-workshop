@@ -10,7 +10,7 @@
 You will want to be able to make a native build on both iOS and Android emulators, and at least one device of either platform.
 
 - A local development environment ready for native iOS and Android React Native / Expo development, capable of running the `npx expo run:ios` and `npx expo run:android`, including recent versions of:
-  - Xcode (version 15+)
+  - Xcode (version 26+)
   - Watchman
   - Cocoapods
   - JDK 17
