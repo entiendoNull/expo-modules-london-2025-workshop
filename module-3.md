@@ -546,7 +546,15 @@ export default function App() {
 }
 ```
 
-<img width="1282" height="785" alt="image" src="https://github.com/user-attachments/assets/3abb3f32-99a4-4421-a372-c7d63947c030" />
+<details>
+  <summary>Xcode instructions</summary>
+  <img width="1282" height="785" alt="image" src="https://github.com/user-attachments/assets/3abb3f32-99a4-4421-a372-c7d63947c030" />
+</details>
+
+<details>
+  <summary>Android Studio instructions</summary>
+  <img width="1282" height="785" alt="image" src="https://github.com/user-attachments/assets/880376b5-afd7-4003-a3df-62bcd1ce9643" />
+</details>
 
 ## Next exercise
 
