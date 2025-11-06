@@ -1,6 +1,8 @@
 # Module 2
 
-In the second module, you'll create your own native module from scratch — an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. You'll clean up the boilerplate from the previous exercise, plan a simple TypeScript API, and then implement the native functionality in Swift and Kotlin. Finally, you'll build and test the module on a real device to confirm everything works as expected.
+In the second module, you'll create your own native module from scratch — an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. There are more audio available routes available, but for the sake of simplicity we'll be focusing on these ones as they're fairly straight forward to work with.
+
+You'll clean up the boilerplate from the previous exercise, plan a simple TypeScript API, and then implement the native functionality in Swift and Kotlin. Finally, you'll build and test the module on a real device to confirm everything works as expected.
 
 ### Goals
 
@@ -19,7 +21,7 @@ In the second module, you'll create your own native module from scratch — an a
 
 ## Exercise 0: Clean up the boilerplate
 
-Now that we have familiarized ourselves a little bit with the Expo Module's boilerplate module, let's create our own. We'll be creating an audio route detector to get information of the device's current audio route (e.g. speaker, wired headphones, or bluetooth). There are more audio available routes available, but for the sake of simplicity we'll be focusing on these ones as they're fairly straight forward to work with.
+Now that we have familiarized ourselves a little bit with the Expo Module's boilerplate module, let's create our own.
 
 Since we won't be displaying any views in this module, we'll start by removing the view-related files from the boilerplate.
 
@@ -233,26 +235,35 @@ import ExpoModulesCore
 
 Next, create a helper method called `currentRoute()`. This method should be placed outside of your `ModuleDefinition` (as a private method of the class).
 
-```swift
-private func currentRoute() -> String {
-  let session = AVAudioSession.sharedInstance()
-  let outputs = session.currentRoute.outputs
+```diff
+import ExpoModulesCore
+import AVFoundation
 
-  let first = outputs.first
-  if (first == nil) {
-    return "unknown"
+public class ExpoAudioRouteModule: Module {
+  public func definition() -> ModuleDefinition {
+    Name("ExpoAudioRoute")
   }
 
-  switch (first?.portType) {
-    case .headphones, .headsetMic:
-      return "wiredHeadset"
-    case .bluetoothA2DP, .bluetoothLE, .bluetoothHFP:
-      return "bluetooth"
-    case .builtInSpeaker:
-      return "speaker"
-    default:
-      return "unknown"
-  }
++  private func currentRoute() -> String {
++    let session = AVAudioSession.sharedInstance()
++    let outputs = session.currentRoute.outputs
++
++    let first = outputs.first
++    if (first == nil) {
++      return "unknown"
++    }
++
++    switch (first?.portType) {
++      case .headphones, .headsetMic:
++        return "wiredHeadset"
++      case .bluetoothA2DP, .bluetoothLE, .bluetoothHFP:
++        return "bluetooth"
++      case .builtInSpeaker:
++        return "speaker"
++      default:
++        return "unknown"
++    }
++  }
 }
 ```
 
@@ -262,9 +273,13 @@ This method checks the audio session's current output and returns a string match
 
 Finally, expose this functionality to JavaScript by adding an `AsyncFunction` called `getCurrentRouteAsync`. This should be placed _within_ your `ModuleDefinition`, right below `Name("ExpoAudioRoute")`.
 
-```swift
-AsyncFunction("getCurrentRouteAsync") {
-  return self.currentRoute()
+```diff
+public func definition() -> ModuleDefinition {
+  Name("ExpoAudioRoute")
+
++  AsyncFunction("getCurrentRouteAsync") {
++    return self.currentRoute()
++  }
 }
 ```
 
@@ -293,15 +308,25 @@ import expo.modules.kotlin.modules.ModuleDefinition
 
 Add a property to hold a reference to the `AudioManager`. This should be declared outside of your `ModuleDefinition` as a private class property.
 
-```kotlin
-private var audioManager: AudioManager? = null
+```diff
+class ExpoAudioRouteModule : Module() {
++ private var audioManager: AudioManager? = null
+
+  override fun definition() = ModuleDefinition {
+    Name("ExpoAudioRoute")
+  }
+}
 ```
 
 Initialize the `AudioManager` using the `OnCreate` lifecycle method _within_ your `ModuleDefinition`. This ensures we get the audio manager when the module is created, giving us access to the device's audio routing system.
 
-```kotlin
-OnCreate {
-  audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+```diff
+override fun definition() = ModuleDefinition {
+  Name("ExpoAudioRoute")
+
++  OnCreate {
++    audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
++  }
 }
 ```
 
@@ -309,39 +334,48 @@ OnCreate {
 
 Next, create a helper method called `currentRoute()`. This method should be placed outside of your `ModuleDefinition` (as a private method of the class).
 
-```kotlin
-private fun currentRoute(): String {
-  val outputs = audioManager?.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+```diff
+override fun definition() = ModuleDefinition { ... }
 
-  if(outputs.isNullOrEmpty()) return "unknown"
-
-  // Check in priority order: wired > bluetooth > speaker
-  val wiredTypes = listOf(
-    AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
-    AudioDeviceInfo.TYPE_WIRED_HEADSET,
-    AudioDeviceInfo.TYPE_USB_HEADSET
-  )
-
-  val bluetoothTypes = listOf(
-    AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
-    AudioDeviceInfo.TYPE_BLUETOOTH_SCO
-  )
-
-  val speakerTypes = listOf(
-    AudioDeviceInfo.TYPE_BUILTIN_SPEAKER,
-    AudioDeviceInfo.TYPE_BUILTIN_EARPIECE
-  )
-
-  val device = outputs.firstOrNull { it.type in wiredTypes }
-    ?: outputs.firstOrNull { it.type in bluetoothTypes }
-    ?: outputs.firstOrNull { it.type in speakerTypes }
-
-  return when (device?.type) {
-    in wiredTypes -> "wiredHeadset"
-    in bluetoothTypes -> "bluetooth"
-    in speakerTypes -> "speaker"
-    else -> "unknown"
-  }
++ private fun currentRoute(): String {
++   val outputs = audioManager?.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
++
++   if(outputs.isNullOrEmpty()) return "unknown"
++
++   // Check in priority order: wired > bluetooth > speaker
++   val wiredTypes = listOf(
++     AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
++     AudioDeviceInfo.TYPE_WIRED_HEADSET,
++     AudioDeviceInfo.TYPE_USB_HEADSET
++   )
++
++   val bluetoothTypes = listOf(
++     AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
++     AudioDeviceInfo.TYPE_BLUETOOTH_SCO
++   )
++
++   val speakerTypes = listOf(
++     AudioDeviceInfo.TYPE_BUILTIN_SPEAKER,
++     AudioDeviceInfo.TYPE_BUILTIN_EARPIECE
++   )
++
++   val wired = outputs.firstOrNull { it.type in wiredTypes }
++   val bluetooth = outputs.firstOrNull { it.type in bluetoothTypes }
++   val speaker = outputs.firstOrNull { it.type in speakerTypes }
++
++   val device = when {
++     wired != null -> wired
++     bluetooth != null -> bluetooth
++     speaker != null -> speaker
++     else -> null
++   }
++
++   return when (device?.type) {
++     in wiredTypes -> "wiredHeadset"
++     in bluetoothTypes -> "bluetooth"
++     in speakerTypes -> "speaker"
++     else -> "unknown"
++   }
 }
 ```
 
@@ -349,11 +383,19 @@ This method queries all connected audio output devices and checks them in priori
 
 #### 2.4 Create async function to query for audio route
 
-Finally, expose this functionality to JavaScript by adding an `AsyncFunction` called `getCurrentRouteAsync`. This should be placed _within_ your `ModuleDefinition`, right below `Name("ExpoAudioRoute")`.
+Finally, expose this functionality to JavaScript by adding an `AsyncFunction` called `getCurrentRouteAsync`. This should be placed _within_ your `ModuleDefinition`, right below `OnCreate { ... }`.
 
-```kotlin
-AsyncFunction("getCurrentRouteAsync") {
-  currentRoute()
+```diff
+override fun definition() = ModuleDefinition {
+  Name("ExpoAudioRoute")
+
+  OnCreate {
+    audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+  }
+
++  AsyncFunction("getCurrentRouteAsync") {
++    currentRoute()
++  }
 }
 ```
 
@@ -411,7 +453,7 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <View style={styles.container}>
-        <Text style={styles.routeText}>Current Route: {audioRoute}</Text>
+        <Text>Current Route: {audioRoute}</Text>
         <Button
           title="Get Audio Route"
           onPress={() => {
@@ -431,10 +473,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  routeText: {
-    fontSize: 18,
-    marginBottom: 20,
   },
 });
 ```

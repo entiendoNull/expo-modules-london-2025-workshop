@@ -139,7 +139,7 @@ Now add a second `<Text>` component that calls the `hello()` function:
 > 👀 **Try it:**
 > Save your changes and check your app. You should see:
 >
-> 3.14159
+> 3.141592653589793
 >
 > Hello world! 👋
 
@@ -284,8 +284,9 @@ In addition to functions and constants, Expo modules can expose custom native UI
 
 Update your import in `App.tsx` to include the view:
 
-```ts
-import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
+```diff
+- import ExpoAudioRoute from "./modules/expo-audio-route";
++ import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
 ```
 
 #### 2. Render the Native View
@@ -300,6 +301,8 @@ Add the native view component to your App:
   url="https://expo.dev"
 />
 ```
+
+If you hit save here you have indeed added the view to your app, but you won't see it just yet.
 
 #### 3. Apply Styling to the View
 
@@ -327,7 +330,7 @@ Add a `style` prop with explicit width and height:
 ```tsx
 import * as React from "react";
 import { Button, Text, View, Alert } from "react-native";
-import ExpoAudioRoute from "./modules/expo-audio-route";
+import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
 
 export default function App() {
   React.useEffect(() => {
@@ -458,6 +461,7 @@ Function("hello") {
 declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEvents> {
   PI: number;
   hello(): string;
+  goodbye(): string;
 + concatStringAsync(value: string): Promise<string>;
   setValueAsync(value: string): Promise<void>;
 }
@@ -471,8 +475,8 @@ declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEven
 **File:** `modules/expo-audio-route/ios/ExpoAudioRouteModule.swift`
 
 ```diff
-Function("hello") {
-  return "Hello world! 👋"
+Function("goodbye") {
+  return "Goodbye! 👋"
 }
 +
 + AsyncFunction("concatStringAsync") { (value: String) -> String in
@@ -489,8 +493,8 @@ Function("hello") {
 **File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt`
 
 ```diff
-Function("hello") {
-  "Hello world! 👋"
+Function("goodbye") {
+  "Goodbye! 👋"
 }
 +
 + AsyncFunction("concatStringAsync") { value: String ->
@@ -516,8 +520,9 @@ npx expo run:android
 **File:** `App.tsx`
 
 ```diff
-<Text>{ExpoAudioRoute.hello()}</Text>
 <Text>{ExpoAudioRoute.PI}</Text>
+<Text>{ExpoAudioRoute.hello()}</Text>
+<Text>{ExpoAudioRoute.goodbye()}</Text>
 + <Button
 +   title="Hello from JS!"
 +   onPress={() => {
@@ -533,6 +538,65 @@ npx expo run:android
 > [!NOTE]
 >
 > 👀 **Try it:** After the rebuild completes and your app launches, press the "Hello from JS!" button. Check your console/logs - after a 1-second delay, you should see: `Hello from JS! And hello from native code!`
+
+<details>
+<summary>Full solution</summary>
+
+```tsx
+import * as React from "react";
+import { Button, Text, View, Alert } from "react-native";
+import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
+
+export default function App() {
+  React.useEffect(() => {
+    const sub = ExpoAudioRoute.addListener("onChange", (ev) => {
+      Alert.alert("Event received", ev.value);
+    });
+
+    return () => {
+      sub.remove();
+    };
+  }, []);
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Text>{ExpoAudioRoute.PI}</Text>
+      <Text>{ExpoAudioRoute.hello()}</Text>
+      <Text>{ExpoAudioRoute.goodbye()}</Text>
+      <Button
+        title="Hello from JS!"
+        onPress={() => {
+          ExpoAudioRoute.concatStringAsync("Hello from JS!").then((result) => {
+            console.log(result);
+          });
+        }}
+      />
+      <ExpoAudioRouteView
+        onLoad={() => {
+          console.log("loaded");
+        }}
+        url="https://reactnative.dev"
+        style={{ width: 200, height: 200 }}
+      />
+      <Button
+        title="Click me"
+        onPress={() => {
+          ExpoAudioRoute.setValueAsync("Hello World");
+        }}
+      />
+    </View>
+  );
+}
+```
+
+</details>
 
 ## Exercise 6: Build from Xcode / Android Studio
 
@@ -578,13 +642,13 @@ Alternatively, open Android Studio manually and select "Open" → navigate to th
 **In Xcode:**
 
 1. Select a simulator from the device dropdown at the top
-2. Press `Cmd + R` or click the Play button to build and run
+2. Press the Play button to build and run
 
 **In Android Studio:**
 
 1. Select an emulator from the device dropdown at the top
-2. Press `Ctrl + R` or click the Run button to build and run
+2. Press the Play button to build and run
 
-> [!NOTE]
->
-> 👀 **Try it:** Your app should build and launch from the native IDE. You can now set breakpoints in your native code, view native logs, and debug just like any native app. Try adding a breakpoint in the `goodbye()` function and calling it from your app!
+## Next exercise
+
+[Module 2 👉](./module-2.md)

@@ -81,14 +81,24 @@ Let's start with defining the event names that the module can send to JavaScript
 
 **Swift:**
 
-```swift
-Events("onAudioRouteChange")
+```diff
+public func definition() -> ModuleDefinition {
+  Name("ExpoAudioRoute")
+
++ Events("onAudioRouteChange")
+  ...
+}
 ```
 
 **Kotlin:**
 
 ```kotlin
-Events("onAudioRouteChange")
+override fun definition() = ModuleDefinition {
+  Name("ExpoAudioRoute")
+
++ Events("onAudioRouteChange")
+  ...
+}
 ```
 
 > [!NOTE]
@@ -149,7 +159,18 @@ This method registers an observer that watches for route change notifications fr
 
 **File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt`
 
-**2.1 Add a property for the device callback**
+**2.1** Import import android.media.AudioDeviceInfo
+
+```diff
+import expo.modules.kotlin.modules.Module
+import expo.modules.kotlin.modules.ModuleDefinition
+import android.content.Context
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
++import android.media.AudioDeviceCallback
+```
+
+**2.2 Add a property for the device callback**
 
 Add this property at the class level (outside of `definition()`), right below your `audioManager` declaration:
 
@@ -162,7 +183,7 @@ Add this property at the class level (outside of `definition()`), right below yo
 
 We declare this as `var` because we'll assign it when we start observing and may need to unregister it later.
 
-**2.2 Create the start observing method**
+**2.3 Create the start observing method**
 
 Add this method outside of your `ModuleDefinition`, for example above your `currentRoute()` method:
 
@@ -246,7 +267,11 @@ This unregisters our callback from the audio manager and sets `deviceCallback` b
 
 #### 4. Managing listeners
 
-Finally, we connect the listening logic using `OnStartObserving` and `OnStopObserving`. These lifecycle hooks are called automatically by Expo Modules. This ensures the native side only does work when needed (the system listeners are active only while JavaScript is subscribed) and from the JS side, the API remains as simple as using `.addListener()` and `remove` methods.
+Finally, we connect the listening logic using `OnStartObserving` and `OnStopObserving`. These lifecycle hooks are called automatically by Expo Modules.
+This ensures the native side only does work when needed (the system listeners are active only while JavaScript is subscribed) and from the JS side, the API remains as simple as using `.addListener()` and `remove` methods.
+
+- `OnStartObserving` runs automatically when the first JS listener is added with .addListener.
+- `OnStopObserving` - runs automatically when the last JS listener is removed.
 
 This methods should be placed _within_ your `ModuleDefinition`, for example below `getCurrentRouteAsync`.
 
@@ -427,8 +452,7 @@ With the app running on your device, test the automatic event detection:
 
 **Test 1: Initial state**
 
-1. Open the app - you should see the current audio route displayed
-2. The state should update automatically based on your current audio output
+1. Open the app - you should see the current audio route displayed. At this point it may be "unknown".
 
 **Test 2: Connect Bluetooth**
 
@@ -463,7 +487,7 @@ Store the listener in a reference and add/remove it by clicking buttons. This le
 
 #### 2. Set breakpoints
 
-- Set breakpoints in Xcode or Android Studio to observe when the `OnStartObserving` and `OnStopObserving` methods are executed.
+Set breakpoints in Xcode or Android Studio to observe when the `getCurrentRouteAsync`, `OnStartObserving` and `OnStopObserving` methods are executed.
 
 ```tsx
 import * as React from "react";
@@ -501,7 +525,7 @@ export default function App() {
         onPress={() => {
           if (routeChangeSubscriptionRef.current) return;
 
-          routeChangeSubscriptionRef.current = AudioModule.addListener(
+          routeChangeSubscriptionRef.current = ExpoAudioRoute.addListener(
             "onAudioRouteChange",
             ({ route }) => {
               setCurrentRoute(route);
@@ -514,6 +538,7 @@ export default function App() {
         title="Unregister for route changes"
         onPress={() => {
           routeChangeSubscriptionRef.current?.remove();
+          routeChangeSubscriptionRef.current = null;
         }}
       />
     </View>

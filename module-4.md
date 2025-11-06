@@ -1,6 +1,6 @@
 # Module 4
 
-In the fourth module, you'll refine your Expo module to make it cleaner, more convenient, and easier to use. You'll replace manual event subscriptions with Expo’s useEvent and useEventListener hooks, simplify your React code, and expose your module as custom hooks for even better developer experience. Finally, you’ll add a simple web fallback so the module behaves gracefully on unsupported platforms.
+In the fourth module, you'll refine your Expo module to make it cleaner, more convenient, and easier to use. You'll replace manual event subscriptions with Expo’s `useEvent` and `useEventListener` hooks, simplify your React code, and expose your module as custom hooks for even better developer experience. Finally, you’ll add a simple web fallback so the module behaves gracefully on unsupported platforms.
 
 ### Goals
 
@@ -46,13 +46,43 @@ Without any changes to our native code, we can use the `useEventListener` hook i
 
 Replace your `useEffect` event handling with:
 
-```tsx
-import { useEventListener } from "expo";
+```diff
+import * as React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import ExpoAudioRoute, { AudioRoute } from "./modules/expo-audio-route";
++import { useEventListener } from "expo";
 
-// Inside your component:
-useEventListener(ExpoAudioRoute, "onAudioRouteChange", ({ route }) => {
-  setAudioRoute(route);
-});
+export default function App() {
+  const [audioRoute, setAudioRoute] = React.useState<AudioRoute | null>(
+    "unknown"
+  );
+
++  useEventListener(ExpoAudioRoute, "onAudioRouteChange", ({ route }) => {
++    setAudioRoute(route);
++  });
+
+-  React.useEffect(() => {
+-    // Registers an event listener for audio route changes
+-    const sub = ExpoAudioRoute.addListener(
+-      "onAudioRouteChange",
+-      ({ route }) => {
+-        setAudioRoute(route);
+-      }
+-    );
+-
+-    return () => {
+-      // Unregisters the event listener
+-      sub.remove();
+-    };
+-  }, []);
+
+  return (
+    <>
+      ...
+    </>
+  );
+}
 ```
 
 This is much cleaner! The hook manages the subscription lifecycle automatically.
@@ -66,16 +96,46 @@ There's an even more elegant approach using `useEvent` that eliminates the need 
 
 **File:** `App.tsx`
 
-```tsx
-import { useEvent } from "expo";
+```diff
+import * as React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import ExpoAudioRoute, { AudioRoute } from "./modules/expo-audio-route";
+-import { useEventListener } from "expo";
++import { useEvent } from "expo";
 
-// Place this constant outside your component declaration
-const initialRoute: AudioRoute = "unknown";
++ const initialRoute: AudioRoute = "unknown";
 
-// Inside your component, replace both useState and useEventListener:
-const { route } = useEvent(ExpoAudioRoute, "onAudioRouteChange", {
-  route: initialRoute,
-});
+export default function App() {
+-  const [audioRoute, setAudioRoute] = React.useState<AudioRoute | null>(
+-    "unknown"
+-  );
+-
+-  useEventListener(ExpoAudioRoute, "onAudioRouteChange", ({ route }) => {
+-    setAudioRoute(route);
+-  });
+
++ const { route } = useEvent(ExpoAudioRoute, "onAudioRouteChange", {
++   route: initialRoute,
++ });
+
+  return (
+    <>
+      <View style={styles.container}>
++        <Text>{route}</Text>
+-       <Text>{audioRoute}</Text>
+-       <Button
+-         title="Get Audio Route"
+-         onPress={() => {
+-           ExpoAudioRoute.getCurrentRouteAsync().then((route) => {
+-             setAudioRoute(route);
+-           });
+-         }}
+-       />
+      </View>
+    </>
+  );
+}
 ```
 
 Now `route` is automatically updated whenever the event fires, and you don't need to manage state manually!
@@ -351,7 +411,7 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <View style={styles.container}>
-        <Text style={styles.routeText}>Current Route: {route}</Text>
+        <Text>Current Route: {route}</Text>
       </View>
     </>
   );
@@ -363,10 +423,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  routeText: {
-    fontSize: 18,
-    marginBottom: 20,
   },
 });
 ```
@@ -478,4 +534,10 @@ Refresh your web browser. The app should now display:
 
 ```
 Current Route: unknown
+```
+
+You may need to restart your development server:
+
+```bash
+npx expo start --clear
 ```
