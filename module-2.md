@@ -509,3 +509,7 @@ With the app running on your physical device, test all the different audio outpu
 > [!NOTE]
 >
 > 👀 **Try it:** Each time you change the audio route (by connecting or disconnecting audio devices), tap the button to verify the module correctly detects the new route. The module detects which output is currently connected, so you should see the route change immediately after plugging in or pairing a device.
+
+## Next exercise
+
+[Module 3 👉](./module-3.md)

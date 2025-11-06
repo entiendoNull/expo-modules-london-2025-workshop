@@ -541,3 +541,7 @@ You may need to restart your development server:
 ```bash
 npx expo start --clear
 ```
+
+## Next exercise
+
+[Module 5 👉](./module-5.md)
