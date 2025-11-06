@@ -644,10 +644,15 @@ Alternatively, open Android Studio manually and select "Open" → navigate to th
 1. Select a simulator from the device dropdown at the top
 2. Press the Play button to build and run
 
+<img width="496" height="45" alt="image" src="https://github.com/user-attachments/assets/87f14777-17ea-4474-a86e-653a681243d1" />
+
 **In Android Studio:**
 
 1. Select an emulator from the device dropdown at the top
 2. Press the Play button to build and run
+
+<img width="333" height="45" alt="image" src="https://github.com/user-attachments/assets/9ea45cc0-e1e5-43f6-8a9a-bc365790b550" />
+
 
 ## Next exercise
 
