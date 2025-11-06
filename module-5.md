@@ -1,8 +1,11 @@
 # Module 5
 
+In this module, we'll learn how to create a native view for iOS (using SwiftUI), and Android (using Jetpack Compose),
+and use it in our Expo app.
+
 ## Goals
 
-- Display the current audio route (speaker, wired headset, or bluetooth) using a native view
+- Display the current audio route (speaker, wired headset, or bluetooth) using a native segmented control component
 - Update the native view automatically when the route changes
 - Use SwiftUI on iOS and Jetpack Compose on Android
 
@@ -12,33 +15,38 @@
 - Configuring and using SwiftUI as a native view
 - Configuring and using Jetpack Compose as a native view
 
-## Tasks
+## Exercises
 
-### Task 1: Define TypeScript Types
+### Exercise 1: Define the JavaScript API
 
-Define the props for our view component.
+Just like we did in Module 2, let's begin by defining the JavaScript API for our view component. We'll do this by adding
+types and the native binding to our Expo Module.
 
-**File:** modules/expo-audio-route/src/ExpoAudioRoute.types.ts
+#### Task 1: Define TypeScript types
+
+First, let's declare our types:
+
+**File:** `modules/expo-audio-route/src/ExpoAudioRoute.types.ts`
 
 ```diff
 +import { StyleProp, ViewStyle } from "react-native";
 
- export type RouteChangeEvent = {
-   route: AudioRoute;
- };
+export type RouteChangeEvent = {
+  route: AudioRoute;
+};
 
- export type ExpoAudioRouteModuleEvents = {
-   onAudioRouteChange: (params: RouteChangeEvent) => void;
- };
+export type ExpoAudioRouteModuleEvents = {
+  onAudioRouteChange: (params: RouteChangeEvent) => void;
+};
 
- export type AudioRoute = "speaker" | "wiredHeadset" | "bluetooth" | "unknown";
+export type AudioRoute = "speaker" | "wiredHeadset" | "bluetooth" | "unknown";
 
 +export type OptionChangeEventPayload = {
 +  index: number;
 +  value: string;
 +};
 +
-+export type ExpoAudioControlViewProps = {
++export type ExpoAudioRouteViewProps = {
 +  options: string[];
 +  selectedIndex?: number;
 +  onOptionChange: (event: {
@@ -48,62 +56,66 @@ Define the props for our view component.
 +};
 ```
 
-### Task 2: Create the TypeScript View Component
+#### Task 2: Create the TypeScript binding
 
-Create the view component in TypeScript.
+Next, let's create the view component in TypeScript:
 
-**File:** modules/expo-audio-route/src/ExpoAudioControlView.tsx
+**File:** `modules/expo-audio-route/src/ExpoAudioRouteView.tsx`
 
 ```tsx
 import { requireNativeView } from "expo";
 import * as React from "react";
 
-import { ExpoAudioControlViewProps } from "./ExpoAudioRoute.types";
+import { ExpoAudioRouteViewProps } from "./ExpoAudioRoute.types";
 
-const NativeView: React.ComponentType<ExpoAudioControlViewProps> =
-  requireNativeView("ExpoAudioRoute", "ExpoAudioControlView");
+const NativeView: React.ComponentType<ExpoAudioRouteViewProps> =
+  requireNativeView("ExpoAudioRoute", "ExpoAudioRouteView");
 
-export default function ExpoAudioControlView(props: ExpoAudioControlViewProps) {
+export default function ExpoAudioRouteView(props: ExpoAudioRouteViewProps) {
   return <NativeView {...props} />;
 }
 ```
 
-**File:** modules/expo-audio-route/index.ts
+#### Task 3: Export the native view
+
+**File:** `modules/expo-audio-route/index.ts`
 
 ```diff
- export { default } from "./src/ExpoAudioRouteModule";
- export * from "./src/ExpoAudioRoute.types";
- export { useAudioRouteChangedEvent } from "./src/ExpoAudioRouteModule";
- export { useAudioRoute } from "./src/ExpoAudioRouteModule";
-+export { default as ExpoAudioControlView } from "./src/ExpoAudioControlView";
+export { default } from "./src/ExpoAudioRouteModule";
+export * from "./src/ExpoAudioRoute.types";
+export { useAudioRouteChangedEvent } from "./src/ExpoAudioRouteModule";
+export { useAudioRoute } from "./src/ExpoAudioRouteModule";
++export { default as ExpoAudioRouteView } from "./src/ExpoAudioRouteView";
 ```
 
-### Task 3: Implement iOS SwiftUI View
+### Exercise 2: Create a SwiftUI view for iOS
 
 SwiftUI is Apple's modern declarative framework for building user interfaces. With Expo Modules, we can use SwiftUI views directly in our React Native app.
 
+### Task 1: Implement a SwiftUI View
+
+We'll start by creating a new file for our SwiftUI view:
+
 <details>
-<summary>Swift</summary>
-
-Create a new file for our SwiftUI view:
-
-**File:** modules/expo-audio-route/ios/ExpoAudioControlView.swift
+<summary>
+<code>modules/expo-audio-route/ios/ExpoAudioRouteView.swift</code>
+</summary>
 
 ```swift
 import ExpoModulesCore
 import SwiftUI
 
 // Props class for the segmented picker
-final class ExpoAudioControlViewProps: ExpoSwiftUI.ViewProps {
+final class ExpoAudioRouteViewProps: ExpoSwiftUI.ViewProps {
     @Field var options: [String] = []
     @Field var selectedIndex: Int?
     var onOptionChange = EventDispatcher()
 }
 
-struct ExpoAudioControlView: ExpoSwiftUI.View, ExpoSwiftUI.WithHostingView {
-    @ObservedObject var props: ExpoAudioControlViewProps
+struct ExpoAudioRouteView: ExpoSwiftUI.View, ExpoSwiftUI.WithHostingView {
+    @ObservedObject var props: ExpoAudioRouteViewProps
 
-    init(props: ExpoAudioControlViewProps) {
+    init(props: ExpoAudioRouteViewProps) {
         self.props = props
     }
 
@@ -132,9 +144,19 @@ struct ExpoAudioControlView: ExpoSwiftUI.View, ExpoSwiftUI.WithHostingView {
 }
 ```
 
-Now update the module definition to include our view:
+</details>
 
-**File:** modules/expo-audio-route/ios/ExpoAudioRouteModule.swift
+#### Task 2: Expose the view through the Expo Module
+
+Now let's update the Swift module definition to include our view:
+
+<details>
+<summary>
+<code>modules/expo-audio-route/ios/ExpoAudioRouteModule.swift</code>
+</summary>
+
+> [!NOTE]
+> Unlike UIKit views, you don't need to provide a full list of props and events for a SwiftUI view - Expo Modules takes care of this automatically
 
 ```diff
 import ExpoModulesCore
@@ -159,23 +181,95 @@ public class ExpoAudioRouteModule: Module {
       self.stopObservingRouteChanges()
     }
 
-+   View(ExpoAudioControlView.self)
++   View(ExpoAudioRouteView.self)
   }
 }
 ```
 
 </details>
 
-### Task 4: Implement Android Jetpack Compose View
+#### Task 3: Build and run the app
+
+Now let's try building the app:
+
+```bash
+npx expo run:ios --device
+```
+
+#### Task 4: Update `App.tsx`
+
+Now that we've got a successfully built and running app, let's update the `App.tsx` file to display our new native view.
+
+<details>
+<summary>
+<code>App.tsx</code>
+</summary>
+
+```diff
+import * as React from "react";
+import { Text, View } from "react-native";
+-import { useAudioRouteChangedEvent } from "./modules/expo-audio-route";
++import { ExpoAudioRouteView, useAudioRouteChangedEvent } from "./modules/expo-audio-route";
+
+export default function App() {
+  const { route } = useAudioRouteChangedEvent();
++ const possibleRoutes = ["wiredHeadset", "bluetooth", "speaker", "unknown"];
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Text>Audio Route: {route}</Text>
++     <View style={{ width: '100%', padding: 20 }}>
++       <ExpoAudioRouteView
++         style={{
++           width: "100%",
++           padding: 20,
++         }}
++         options={possibleRoutes}
++         onOptionChange={({ nativeEvent: { index, value } }) => {
++           console.log({
++             index,
++             value,
++           });
++         }}
++       />
++     </View>
+    </View>
+  );
+}
+```
+
+</details>
+
+After making the changes to `App.tsx`, we should now see our new Native View being rendered:
+
+<details>
+  <summary>iOS</summary>
+  <img width="360" alt="iOS device showing the newly-created native view" src="https://github.com/user-attachments/assets/11ea25e8-d1cc-4e3a-b410-863c340703e8" />
+</details>
+
+If you tap on a segment, you should see a log in your terminal showing the `index` and `value` of that segment.
+
+### Exercise 3: Create a Jetpack Compose view for Android
 
 Jetpack Compose is Android's modern toolkit for building native UI. Like SwiftUI, it also uses a declarative approach to building UI.
 
+#### Task 1: Update build configuration
+
+> [!NOTE]
+> Jetpack Compose does not come preinstalled with the Android system OS, so we need to add its build dependencies to our native project first
+
+First, we need to make a few changes to our module's `build.gradle` so that we can use Jetpack Compose:
+
 <details>
-<summary>Kotlin</summary>
-
-First, we need to make a few changes to our module's `build.gradle`:
-
-**File:** modules/expo-audio-route/android/build.gradle
+<summary>
+<code>modules/expo-audio-route/android/build.gradle</code>
+</summary>
 
 ```diff
 apply plugin: 'com.android.library'
@@ -255,9 +349,32 @@ android {
 +}
 ```
 
+</details>
+
+Additionally, we'll need to enable Compose support in Expo Modules. We can do that by editing `expo-module.config.json` and adding
+a `coreFeatures` property:
+
+```diff
+{
+  "platforms": ["apple", "android", "web"],
++ "coreFeatures": ["compose"],
+  "apple": {
+    "modules": ["ExpoAudioRouteModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.audioroute.ExpoAudioRouteModule"]
+  }
+}
+```
+
+#### Task 2: Implement a Jetpack Compose View
+
 Next, let's create a new file for the view:
 
-**File:** modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteView.kt
+<details>
+<summary>
+<code>modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteView.kt</code>
+</summary>
 
 ```kotlin
 package expo.modules.audioroute
@@ -282,7 +399,7 @@ data class PickerProps(
     val selectedIndex: MutableState<Int?> = mutableStateOf(null),
 ) : ComposeProps
 
-class ExpoAudioControlView(context: Context, appContext: AppContext) :
+class ExpoAudioRouteView(context: Context, appContext: AppContext) :
     ExpoComposeView<PickerProps>(context, appContext, withHostingView = true) {
     override val props = PickerProps()
     private val onOptionChange by EventDispatcher()
@@ -312,9 +429,16 @@ class ExpoAudioControlView(context: Context, appContext: AppContext) :
 }
 ```
 
-Now update the module definition to include our view:
+</details>
 
-**File:** modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt
+#### Task 3: Expose the view through the Expo Module
+
+Now let's update the module definition to include our view:
+
+<details>
+<summary>
+<code>modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt</code>
+</summary>
 
 ```diff
 package expo.modules.audioroute
@@ -352,7 +476,7 @@ class ExpoAudioRouteModule : Module() {
     }
 
 
-+   View(ExpoAudioControlView::class) {
++   View(ExpoAudioRouteView::class) {
 +     Events("onOptionChange")
 +   }
   }
@@ -361,38 +485,39 @@ class ExpoAudioRouteModule : Module() {
 
 </details>
 
-### Task 5: Use the Native View
+#### Task 4: Build and run the app
 
-Build your app to include the new native view code:
+Just as we did for iOS, let's build the app and run it. Because we've already updated `App.tsx` earlier, we should see
+the newly-created Native View as soon as the app launches:
 
-**iOS:**
+<details>
+  <summary>Android</summary>
+  <img width="360" alt="Android device showing the newly-created native view" src="https://github.com/user-attachments/assets/a9e842c2-f461-4a46-b5cf-22ee9a8251ab" />
+</details>
 
-```bash
-npx expo run:ios --device
-```
+### Exercise 4: Connect the Native View to the audio route
 
-**Android:**
+Now that we've got our Native View successfully built and working for both platforms, let's have it update when the current
+audio route changes.
 
-```bash
-npx expo run:android --device
-```
+#### Task 1: Hook up the audio route to the Native View
 
 Update your `App.tsx` to display the native view component. The view will automatically update when the audio route changes.
 
 <details>
-<summary>See solution</summary>
-
-**File:** App.tsx
+<summary>
+<code>App.tsx</code>
+</summary>
 
 ```diff
 import * as React from "react";
 import { Text, View } from "react-native";
 -import { useAudioRouteChangedEvent } from "./modules/expo-audio-route";
-+import { ExpoAudioControlView, useAudioRouteChangedEvent } from "./modules/expo-audio-route";
++import { ExpoAudioRouteView, useAudioRouteChangedEvent } from "./modules/expo-audio-route";
 
 export default function App() {
   const { route } = useAudioRouteChangedEvent();
-+ const possibleRoutes = ["wiredHeadset", "bluetooth", "speaker", "unknown"];
+  const possibleRoutes = ["wiredHeadset", "bluetooth", "speaker", "unknown"];
 + const index = possibleRoutes.indexOf(route);
 
   return (
@@ -404,22 +529,22 @@ export default function App() {
       }}
     >
       <Text>Audio Route: {route}</Text>
-+     <View style={{ width: '100%', padding: 20 }}>
-+       <ExpoAudioControlView
-+         style={{
-+           width: "100%",
-+           padding: 20,
-+         }}
+      <View style={{ width: '100%', padding: 20 }}>
+        <ExpoAudioRouteView
+          style={{
+            width: "100%",
+            padding: 20,
+          }}
 +         selectedIndex={index}
-+         options={possibleRoutes}
-+         onOptionChange={({ nativeEvent: { index, value } }) => {
-+           console.log({
-+             index,
-+             value,
-+           });
-+         }}
-+       />
-+     </View>
+          options={possibleRoutes}
+          onOptionChange={({ nativeEvent: { index, value } }) => {
+            console.log({
+              index,
+              value,
+            });
+          }}
+        />
+      </View>
     </View>
   );
 }
@@ -427,11 +552,23 @@ export default function App() {
 
 </details>
 
-### Task 6: Test Different Audio Routes
+With the changes above, we should now see our view displays the currently active audio route:
+
+<details>
+  <summary>iOS</summary>
+  <img width="360" alt="iOS device showing the currently active audio route" src="https://github.com/user-attachments/assets/d20c3472-ecca-492f-be17-20e1cea27a33" />
+</details>
+
+<details>
+  <summary>Android</summary>
+  <img width="360" alt="Android device showing the currently active audio route" src="https://github.com/user-attachments/assets/05578b6f-bc9c-4359-81c1-84abcfa7c0e3" />
+</details>
+
+#### Task 2: Test by changing audio routes
 
 With the app running on your device:
 
 1. Observe the initial audio route display
 2. Connect Bluetooth headphones and watch the view update automatically
 3. Disconnect Bluetooth and plug in wired headphones to see the view change again
-4. Disconnect all devices to return to the speaker display
+4. Disconnect all devices to see the view update to the speaker route once again
