@@ -226,6 +226,8 @@ The example module requires us to manually trigger the `onChange` event. Add a b
 >
 > 👀 **Try it:**
 > Save your changes and check your app. You should now see a "Click Me" button. When you press it, an alert should appear with the title "Event received" and "Hello World" as its message.
+>
+> https://github.com/user-attachments/assets/0c5efa36-e4c0-40a6-9fb9-1ebc4b1baa81
 
 <details>
 <summary>Full solution</summary>
@@ -320,9 +322,10 @@ Add a `style` prop with explicit width and height:
 >
 > 👀 **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page > finishes loading.
 >
+> <img width="200" alt="Screenshot_1762425917" src="https://github.com/user-attachments/assets/9a6621c6-e62b-4e3c-be1e-f5b81280868c" />
+> 
 > 👀 **Try changing the `url` prop** to a different website (like `"https://reactnative.dev"`) and save. The WebView should update to show the new site.
->
-> <img width="200" alt="Screenshot_1762426096" src="https://github.com/user-attachments/assets/977f66e6-e092-485c-83b9-76a21cd7f8c1" />
+
 
 <details>
 <summary>Full solution</summary>
@@ -450,6 +453,8 @@ Function("hello") {
 > 1. Save the file and try to consume the the new `goodbye` function.
 >
 > 2. Remember to rebuild after native changes: `npx expo run:ios` or `npx expo run:android`. Now you should be able to run the app.
+>
+> <img width="200" alt="Screenshot_1762426096" src="https://github.com/user-attachments/assets/977f66e6-e092-485c-83b9-76a21cd7f8c1" />
 
 ## Exercise 6: Build from Xcode / Android Studio
 
