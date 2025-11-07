@@ -139,9 +139,9 @@ Now add a second `<Text>` component that calls the `hello()` function:
 > 👀 **Try it:**
 > Save your changes and check your app. You should see:
 >
-> 3.141592653589793
->
-> Hello world! 👋
+> <img width="200"  alt="Screenshot_1762424912" src="https://github.com/user-attachments/assets/450a047f-3671-4071-9e1f-f52912ec68f8" />
+
+
 
 <details>
 <summary>See full solution</summary>
@@ -323,6 +323,9 @@ Add a `style` prop with explicit width and height:
 > 👀 **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page > finishes loading.
 >
 > 👀 **Try changing the `url` prop** to a different website (like `"https://reactnative.dev"`) and save. The WebView should update to show the new site.
+>
+> <img width="200" alt="Screenshot_1762426096" src="https://github.com/user-attachments/assets/977f66e6-e092-485c-83b9-76a21cd7f8c1" />
+
 
 <details>
 <summary>Full solution</summary>
