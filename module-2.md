@@ -1,6 +1,6 @@
 # Module 2
 
-In the second module, you'll create your own native module from scratch — an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. There are more audio available routes available, but for the sake of simplicity we'll be focusing on these ones as they're fairly straight forward to work with.
+In the second module, you'll create your own native module from scratch — an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. There are more audio available routes available, but for the sake of simplicity we'll be focusing on these ones as they're fairly straightforward to work with.
 
 You'll clean up the boilerplate from the previous exercise, plan a simple TypeScript API, and then implement the native functionality in Swift and Kotlin. Finally, you'll build and test the module on a real device to confirm everything works as expected.
 
@@ -31,11 +31,11 @@ Since we won't be displaying any views in this module, we'll start by removing t
 
 Delete the following files that we won't need:
 
-- modules/expo-audio-route/src/ExpoAudioRouteView.tsx
-- modules/expo-audio-route/src/ExpoAudioRouteView.web.tsx
-- modules/expo-audio-route/src/ExpoAudioRouteModule.web.ts
-- modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteView.kt
-- modules/expo-audio-route/ios/ExpoAudioRouteView.swift
+- `modules/expo-audio-route/src/ExpoAudioRouteView.tsx`
+- `modules/expo-audio-route/src/ExpoAudioRouteView.web.tsx`
+- `modules/expo-audio-route/src/ExpoAudioRouteModule.web.ts`
+- `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute`/ExpoAudioRouteView.kt
+- `modules/expo-audio-route/ios/ExpoAudioRouteView.swift`
 
 You can either remove them manually or by running these commands in your terminal:
 
@@ -174,7 +174,7 @@ For our Audio Route module, we want a way to ask for the current audio route. De
 
 ### Tasks
 
-#### 1. Define the AudioRoute type
+#### 1. Define the `AudioRoute` type
 
 **File:** `modules/expo-audio-route/src/ExpoAudioRoute.types.ts`
 
@@ -306,7 +306,7 @@ import expo.modules.kotlin.modules.ModuleDefinition
 
 #### 2.2 Initialize the `AudioManager`
 
-Add a property to hold a reference to the `AudioManager`. This should be declared outside of your `ModuleDefinition` as a private class property.
+Add a property to hold a reference to the `AudioManager`. This should be declared on the `Module` as a private class property.
 
 ```diff
 class ExpoAudioRouteModule : Module() {
