@@ -474,6 +474,10 @@ With the app running on your device, test the automatic event detection:
 > [!NOTE]
 >
 > 👀 **Try it:** Unlike Module 2 where you had to press a button to check the route, now the app automatically responds to audio route changes in real-time! This is the power of event-driven architecture.
+>
+> https://github.com/user-attachments/assets/73927bf2-1bcb-4f68-9ab0-1b8200a908c1
+
+
 
 ## Bonus Exercise: Debug lifecycle hooks in Xcode / Android Studio
 
