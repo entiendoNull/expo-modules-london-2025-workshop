@@ -425,6 +425,9 @@ npx expo run:android --device
 
 When prompted, select your connected device from the list.
 
+<img width="496" height="101" alt="image" src="https://github.com/user-attachments/assets/0a782ec7-1cfa-4123-9f42-5e5c3ef7d3d9" />
+
+
 > [!NOTE]
 >
 > 👀 **Simulators vs Real Devices:**
@@ -509,6 +512,10 @@ With the app running on your physical device, test all the different audio outpu
 > [!NOTE]
 >
 > 👀 **Try it:** Each time you change the audio route (by connecting or disconnecting audio devices), tap the button to verify the module correctly detects the new route. The module detects which output is currently connected, so you should see the route change immediately after plugging in or pairing a device.
+>
+> https://github.com/user-attachments/assets/4aa25453-a6d8-462b-af4f-3470a2ca67f7
+
+
 
 ## Next exercise
 
