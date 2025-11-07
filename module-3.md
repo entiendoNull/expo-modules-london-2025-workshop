@@ -92,7 +92,7 @@ public func definition() -> ModuleDefinition {
 
 **Kotlin:**
 
-```kotlin
+```diff
 override fun definition() = ModuleDefinition {
   Name("ExpoAudioRoute")
 
@@ -475,8 +475,7 @@ With the app running on your device, test the automatic event detection:
 >
 > 👀 **Try it:** Unlike Module 2 where you had to press a button to check the route, now the app automatically responds to audio route changes in real-time! This is the power of event-driven architecture.
 >
-> https://github.com/user-attachments/assets/73927bf2-1bcb-4f68-9ab0-1b8200a908c1
-
+> https://github.com/user-attachments/assets/554a7129-ed13-4e41-b92e-d0df14414a8a
 
 
 ## Bonus Exercise: Debug lifecycle hooks in Xcode / Android Studio
