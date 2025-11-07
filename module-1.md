@@ -327,7 +327,7 @@ Add a `style` prop with explicit width and height:
 > 👀 **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page > finishes loading.
 >
 > <img width="200" alt="Screenshot_1762425917" src="https://github.com/user-attachments/assets/9a6621c6-e62b-4e3c-be1e-f5b81280868c" />
-> 
+>
 > 👀 **Try changing the `url` prop** to a different website (like `"https://reactnative.dev"`) and save. The WebView should update to show the new site.
 
 
@@ -518,7 +518,8 @@ Alternatively, open Android Studio manually and select "Open" → navigate to th
 > [!WARNING]
 > Android Studio might not be able to run your app without first configuring Gradle correctly. If you see Gradle sync
 > errors, open Android Studio's settings and navigate to **Settings > Build, Execution, Deployment > Build Tools > Gradle**
-> then switch the **Gradle JDK** setting to **JAVA_HOME**
+> then switch the **Gradle JDK** setting to **JAVA_HOME**. After changing the setting, start a Gradle sync again and wait
+> for it to complete - this may take a few minutes.
 
 ## Next exercise
 
