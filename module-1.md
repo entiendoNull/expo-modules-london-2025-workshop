@@ -141,8 +141,6 @@ Now add a second `<Text>` component that calls the `hello()` function:
 >
 > <img width="200"  alt="Screenshot_1762424912" src="https://github.com/user-attachments/assets/450a047f-3671-4071-9e1f-f52912ec68f8" />
 
-
-
 <details>
 <summary>See full solution</summary>
 
@@ -326,7 +324,6 @@ Add a `style` prop with explicit width and height:
 >
 > <img width="200" alt="Screenshot_1762426096" src="https://github.com/user-attachments/assets/977f66e6-e092-485c-83b9-76a21cd7f8c1" />
 
-
 <details>
 <summary>Full solution</summary>
 
@@ -454,153 +451,6 @@ Function("hello") {
 >
 > 2. Remember to rebuild after native changes: `npx expo run:ios` or `npx expo run:android`. Now you should be able to run the app.
 
-### Add an Asynchronous Function
-
-#### 1. Update the TypeScript types to accommodate a new asynchronous function
-
-**File:** `modules/expo-audio-route/src/ExpoAudioRouteModule.ts`
-
-```diff
-declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEvents> {
-  PI: number;
-  hello(): string;
-  goodbye(): string;
-+ concatStringAsync(value: string): Promise<string>;
-  setValueAsync(value: string): Promise<void>;
-}
-```
-
-#### 2. Add a new async function that returns data to both native modules (iOS/Android)
-
-<details>
-<summary>Swift</summary>
-
-**File:** `modules/expo-audio-route/ios/ExpoAudioRouteModule.swift`
-
-```diff
-Function("goodbye") {
-  return "Goodbye! 👋"
-}
-+
-+ AsyncFunction("concatStringAsync") { (value: String) -> String in
-+   try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second delay
-+   return value + " And hello from native code!"
-+ }
-```
-
-</details>
-
-<details>
-<summary>Kotlin</summary>
-
-**File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt`
-
-```diff
-Function("goodbye") {
-  "Goodbye! 👋"
-}
-+
-+ AsyncFunction("concatStringAsync") { value: String ->
-+   Thread.sleep(1000)
-+   value + " And hello from native code!"
-+ }
-```
-
-</details>
-
-#### 3. Rebuild the app
-
-Since you changed native code, you must rebuild:
-
-```terminal
-npx expo run:ios
-# or
-npx expo run:android
-```
-
-#### 4. Call it from React
-
-**File:** `App.tsx`
-
-```diff
-<Text>{ExpoAudioRoute.PI}</Text>
-<Text>{ExpoAudioRoute.hello()}</Text>
-<Text>{ExpoAudioRoute.goodbye()}</Text>
-+ <Button
-+   title="Hello from JS!"
-+   onPress={() => {
-+     ExpoAudioRoute.concatStringAsync("Hello from JS!").then(
-+       (result) => {
-+         console.log(result);
-+       }
-+     );
-+   }}
-+ />
-```
-
-> [!NOTE]
->
-> 👀 **Try it:** After the rebuild completes and your app launches, press the "Hello from JS!" button. Check your console/logs - after a 1-second delay, you should see: `Hello from JS! And hello from native code!`
-
-<details>
-<summary>Full solution</summary>
-
-```tsx
-import * as React from "react";
-import { Button, Text, View, Alert } from "react-native";
-import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
-
-export default function App() {
-  React.useEffect(() => {
-    const sub = ExpoAudioRoute.addListener("onChange", (ev) => {
-      Alert.alert("Event received", ev.value);
-    });
-
-    return () => {
-      sub.remove();
-    };
-  }, []);
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Text>{ExpoAudioRoute.PI}</Text>
-      <Text>{ExpoAudioRoute.hello()}</Text>
-      <Text>{ExpoAudioRoute.goodbye()}</Text>
-      <Button
-        title="Hello from JS!"
-        onPress={() => {
-          ExpoAudioRoute.concatStringAsync("Hello from JS!").then((result) => {
-            console.log(result);
-          });
-        }}
-      />
-      <ExpoAudioRouteView
-        onLoad={() => {
-          console.log("loaded");
-        }}
-        url="https://reactnative.dev"
-        style={{ width: 200, height: 200 }}
-      />
-      <Button
-        title="Click me"
-        onPress={() => {
-          ExpoAudioRoute.setValueAsync("Hello World");
-        }}
-      />
-    </View>
-  );
-}
-```
-
-</details>
-
 ## Exercise 6: Build from Xcode / Android Studio
 
 Opening your project in the native IDEs allows you to view, debug, and modify the native code directly. This is especially useful for setting breakpoints, viewing native logs, and understanding how your module integrates with the native platform.
@@ -655,7 +505,6 @@ Alternatively, open Android Studio manually and select "Open" → navigate to th
 2. Press the Play button to build and run
 
 <img width="333" height="45" alt="image" src="https://github.com/user-attachments/assets/9ea45cc0-e1e5-43f6-8a9a-bc365790b550" />
-
 
 ## Next exercise
 
