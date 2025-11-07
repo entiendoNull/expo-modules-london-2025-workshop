@@ -40,9 +40,9 @@ npx expo install expo-dev-client
 
 #### 3 Create new Expo Module
 
-When prompted the name I’ll be using `expo-audio-route`, and then just go ahead and accept the suggestions for the following prompts.
+When prompted the name I’ll be using is `expo-audio-route`, and then I'll just go ahead and accept the suggestions for the subsequent prompts.
 
-The `--local` flag creates a module that lives inside your project rather than a standalone package that could be published to npm. It’s perfect when you just need some custom native functionality for a specific app.
+The `--local` flag creates a module that lives inside your project, instead of a standalone package that could be published to npm. It’s perfect when you just need custom native functionality for a specific app.
 
 ```
 npx create-expo-module@latest --local
@@ -52,9 +52,9 @@ npx create-expo-module@latest --local
 
 #### 1. Prebuild
 
-Continuous Native Generation (CNG) is the process of generating native projects on demand from a set of concise inputs (such as e.g. your app config and package.json).
+Continuous Native Generation (CNG) is the process of generating native projects on-demand from a set of concise inputs (such as e.g. your app config and package.json).
 
-Instead of committing entire native projects (ios and android root directories) to source control, you only commit the configuration and code that define your app. Whenever you need to compile, Expo regenerates the full native projects for you.
+Instead of committing entire native projects (`ios/` and `android/` directories) to source control, you only commit the configuration and code that defines your app. Whenever you need to compile, the Expo CLI regenerates the native project folders for you.
 
 ```
 npx expo prebuild --clean
@@ -62,13 +62,13 @@ npx expo prebuild --clean
 
 > [!NOTE]
 >
-> 👀 Check your file tree out and notice how the `ios` and `android` directories have been created in the root of your project
+> 👀 Check your file tree out and notice how the `ios/` and `android/` directories have now been created in the root of your project
 
 #### 2. Build
 
-You can build your project locally by running the compile commands provided by the Expo CLI. These commands generate the `ios` and `android` directories that Xcode and Android Studio use to compile your app.
+You can build your project locally by running the compile commands provided by the Expo CLI. These commands generate the `ios/` and `android/` directories that Xcode and Android Studio use to compile your app.
 
-The first time your build an app it will also trigger a `prebuild` if `ios` and `android` directories are not present in the project.
+The first time your build an app it will also trigger a prebuild if the `ios/` and `android/` directories are not present in the project. You can also manually trigger a prebuild with `npx expo prebuild`.
 
 ```
 npx expo run:ios
@@ -80,7 +80,7 @@ npx expo run:android
 
 > [!NOTE]
 >
-> 👀 Once the build is done the development server should start and your app be installed and opened up on your simulator/emulator
+> 👀 Once the build is complete, the development server should start and your app will be installed and launched on your simulator/emulator
 
 ## Exercise 2: Consume parts of the imperative API
 
@@ -105,6 +105,10 @@ This shows us that the module exposes:
 - A constant: `PI`
 - A synchronous function: `hello()`
 - An async function: `setValueAsync()`
+
+> [!NOTE]
+>
+> By convention, Expo uses the `Async` suffix to denote async functions, but this is simply a naming convention
 
 ### Tasks
 
@@ -171,9 +175,9 @@ export default function App() {
 
 ### Background: Understanding Events
 
-You might notice that in the `ExpoAudioRouteModule` file (`modules/expo-audio-route/src/ExpoAudioRouteModule.ts`) there are no `addListener` or `removeListener` functions. That's because these are already built into Expo's `NativeModule` type!
+You might notice that in `modules/expo-audio-route/src/ExpoAudioRouteModule.ts`, there are no `addListener` or `removeListener` functions. That's because these are already built into Expo's `NativeModule` type!
 
-The event definitions live in `ExpoAudioRoute.types.ts` (`modules/expo-audio-route/src/ExpoAudioRoute.types.ts`), which defines the event names and payload shapes:
+The event definitions live in `modules/expo-audio-route/src/ExpoAudioRoute.types.ts`, which defines the event names and payload shapes:
 
 ```ts
 export type ExpoAudioRouteModuleEvents = {
@@ -293,7 +297,7 @@ Update your import in `App.tsx` to include the view:
 
 Add the native view component to your App:
 
-```ts
+```tsx
 <ExpoAudioRouteView
   onLoad={() => {
     console.log("loaded");
@@ -308,7 +312,7 @@ If you hit save here you have indeed added the view to your app, but you won't s
 
 Add a `style` prop with explicit width and height:
 
-```ts
+```tsx
 <ExpoAudioRouteView
   onLoad={() => {
     console.log("loaded");
@@ -323,7 +327,7 @@ Add a `style` prop with explicit width and height:
 > 👀 **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page > finishes loading.
 >
 > <img width="200" alt="Screenshot_1762425917" src="https://github.com/user-attachments/assets/9a6621c6-e62b-4e3c-be1e-f5b81280868c" />
-> 
+>
 > 👀 **Try changing the `url` prop** to a different website (like `"https://reactnative.dev"`) and save. The WebView should update to show the new site.
 
 
@@ -379,9 +383,9 @@ export default function App() {
 
 ## Exercise 5: Extend the Module
 
-Now let's add our own functionality to the module! Any changes to native code require rebuilding the app.
+Now let's add our own functionality to the module! Because we'll be making changes to native code, we'll need to rebuild the app.
 
-### Add a syncronous function
+### Add a synchronous function
 
 #### 1. Update the TypeScript Types
 
@@ -450,7 +454,7 @@ Function("hello") {
 >
 > 👀 **Try it**
 >
-> 1. Save the file and try to consume the the new `goodbye` function.
+> 1. Save the file and try to consume the new `goodbye` function.
 >
 > 2. Remember to rebuild after native changes: `npx expo run:ios` or `npx expo run:android`. Now you should be able to run the app.
 >
@@ -510,6 +514,12 @@ Alternatively, open Android Studio manually and select "Open" → navigate to th
 2. Press the Play button to build and run
 
 <img width="333" height="45" alt="image" src="https://github.com/user-attachments/assets/9ea45cc0-e1e5-43f6-8a9a-bc365790b550" />
+
+> [!WARNING]
+> Android Studio might not be able to run your app without first configuring Gradle correctly. If you see Gradle sync
+> errors, open Android Studio's settings and navigate to **Settings > Build, Execution, Deployment > Build Tools > Gradle**
+> then switch the **Gradle JDK** setting to **JAVA_HOME**. After changing the setting, start a Gradle sync again and wait
+> for it to complete - this may take a few minutes.
 
 ## Next exercise
 
