@@ -434,11 +434,12 @@ With the app running on your device, test the automatic event detection:
 
 3. To verify this behavior, add a `console.log` inside your event listener to see when events are actually emitted:
 
-````tsx
+```tsx
 const sub = ExpoAudioRoute.addListener("onAudioRouteChange", ({ route }) => {
   console.log("Audio route changed to:", route);
   setAudioRoute(route);
 });
+```
 
 4. Check your terminal - on iOS you won't see any log until you actually change the audio route in the next tests, but on Android you may see an initial log.
 
@@ -534,7 +535,7 @@ export default function App() {
     </View>
   );
 }
-````
+```
 
 <details>
   <summary>Xcode instructions</summary>
