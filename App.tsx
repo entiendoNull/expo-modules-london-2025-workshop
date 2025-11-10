@@ -1,18 +1,28 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { AudioRoute, useAudioRouteChangedEvent } from "./modules/expo-audio-route";
-
-const initialRoute: AudioRoute = "unknown";
+import { StatusBar } from "expo-status-bar";
+import { ExpoAudioRouteView, useAudioRouteChangedEvent } from "./modules/expo-audio-route";
 
 export default function App() {
   const { route } = useAudioRouteChangedEvent();
+  const possibleRoutes = ["wiredHeadset", "bluetooth", "speaker", "unknown"];
 
   return (
     <>
       <StatusBar style="auto" />
       <View style={styles.container}>
         <Text>Current Route: {route}</Text>
+        <View style={styles.audioRouteContainer}>
+          <ExpoAudioRouteView
+            style={styles.audioRoute}
+            options={possibleRoutes}
+            onOptionChange={({ nativeEvent: { index, value } }) => {
+              console.log({
+                index,
+                value,
+              });
+            }}
+          />
+        </View>
       </View>
     </>
   );
@@ -25,4 +35,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  audioRouteContainer: {
+    width: '100%',
+    padding: 20
+  },
+  audioRoute: {
+    width: "100%",
+    padding: 20,
+  }
 });
