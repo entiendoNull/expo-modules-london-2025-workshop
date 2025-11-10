@@ -5,6 +5,7 @@ import { ExpoAudioRouteView, useAudioRouteChangedEvent } from "./modules/expo-au
 export default function App() {
   const { route } = useAudioRouteChangedEvent();
   const possibleRoutes = ["wiredHeadset", "bluetooth", "speaker", "unknown"];
+  const index = possibleRoutes.indexOf(route);
 
   return (
     <>
@@ -14,6 +15,7 @@ export default function App() {
         <View style={styles.audioRouteContainer}>
           <ExpoAudioRouteView
             style={styles.audioRoute}
+            selectedIndex={index}
             options={possibleRoutes}
             onOptionChange={({ nativeEvent: { index, value } }) => {
               console.log({
