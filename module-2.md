@@ -39,7 +39,7 @@ Delete the following files that we won't need:
 
 You can either remove them manually or by running these commands in your terminal:
 
-```
+```sh
 rm modules/expo-audio-route/src/ExpoAudioRouteView.tsx
 rm modules/expo-audio-route/src/ExpoAudioRouteView.web.tsx
 rm modules/expo-audio-route/src/ExpoAudioRouteModule.web.ts
@@ -157,6 +157,12 @@ export default function App() {
     </View>
   );
 }
+```
+
+Finally, run prebuild again to remove outdated files from the native projects.
+
+```sh
+npx expo prebuild --clean
 ```
 
 ## Exercise 1: Plan and implement the API
@@ -277,9 +283,9 @@ Finally, expose this functionality to JavaScript by adding an `AsyncFunction` ca
 public func definition() -> ModuleDefinition {
   Name("ExpoAudioRoute")
 
-+  AsyncFunction("getCurrentRouteAsync") {
-+    return self.currentRoute()
-+  }
++ AsyncFunction("getCurrentRouteAsync") {
++   return self.currentRoute()
++ }
 }
 ```
 
@@ -324,9 +330,9 @@ Initialize the `AudioManager` using the `OnCreate` lifecycle method _within_ you
 override fun definition() = ModuleDefinition {
   Name("ExpoAudioRoute")
 
-+  OnCreate {
-+    audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-+  }
++ OnCreate {
++   audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
++ }
 }
 ```
 
@@ -335,47 +341,53 @@ override fun definition() = ModuleDefinition {
 Next, create a helper method called `currentRoute()`. This method should be placed outside of your `ModuleDefinition` (as a private method of the class).
 
 ```diff
-override fun definition() = ModuleDefinition { ... }
+override fun definition() = ModuleDefinition {
+  Name("ExpoAudioRoute")
 
-+ private fun currentRoute(): String {
-+   val outputs = audioManager?.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+  OnCreate {
+    audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+  }
+}
+
++private fun currentRoute(): String {
++  val outputs = audioManager?.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
 +
-+   if(outputs.isNullOrEmpty()) return "unknown"
++  if(outputs.isNullOrEmpty()) return "unknown"
 +
-+   // Check in priority order: wired > bluetooth > speaker
-+   val wiredTypes = listOf(
-+     AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
-+     AudioDeviceInfo.TYPE_WIRED_HEADSET,
-+     AudioDeviceInfo.TYPE_USB_HEADSET
-+   )
++  // Check in priority order: wired > bluetooth > speaker
++  val wiredTypes = listOf(
++    AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
++    AudioDeviceInfo.TYPE_WIRED_HEADSET,
++    AudioDeviceInfo.TYPE_USB_HEADSET
++  )
 +
-+   val bluetoothTypes = listOf(
-+     AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
-+     AudioDeviceInfo.TYPE_BLUETOOTH_SCO
-+   )
++  val bluetoothTypes = listOf(
++    AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
++    AudioDeviceInfo.TYPE_BLUETOOTH_SCO
++  )
 +
-+   val speakerTypes = listOf(
-+     AudioDeviceInfo.TYPE_BUILTIN_SPEAKER,
-+     AudioDeviceInfo.TYPE_BUILTIN_EARPIECE
-+   )
++  val speakerTypes = listOf(
++    AudioDeviceInfo.TYPE_BUILTIN_SPEAKER,
++    AudioDeviceInfo.TYPE_BUILTIN_EARPIECE
++  )
 +
-+   val wired = outputs.firstOrNull { it.type in wiredTypes }
-+   val bluetooth = outputs.firstOrNull { it.type in bluetoothTypes }
-+   val speaker = outputs.firstOrNull { it.type in speakerTypes }
++  val wired = outputs.firstOrNull { it.type in wiredTypes }
++  val bluetooth = outputs.firstOrNull { it.type in bluetoothTypes }
++  val speaker = outputs.firstOrNull { it.type in speakerTypes }
 +
-+   val device = when {
-+     wired != null -> wired
-+     bluetooth != null -> bluetooth
-+     speaker != null -> speaker
-+     else -> null
-+   }
++  val device = when {
++    wired != null -> wired
++    bluetooth != null -> bluetooth
++    speaker != null -> speaker
++    else -> null
++  }
 +
-+   return when (device?.type) {
-+     in wiredTypes -> "wiredHeadset"
-+     in bluetoothTypes -> "bluetooth"
-+     in speakerTypes -> "speaker"
-+     else -> "unknown"
-+   }
++  return when (device?.type) {
++    in wiredTypes -> "wiredHeadset"
++    in bluetoothTypes -> "bluetooth"
++    in speakerTypes -> "speaker"
++    else -> "unknown"
++  }
 }
 ```
 
@@ -413,20 +425,19 @@ Since we changed native code, we need to rebuild. We'll test on a physical devic
 
 **iOS:**
 
-```bash
+```sh
 npx expo run:ios --device
 ```
 
 **Android:**
 
-```bash
+```sh
 npx expo run:android --device
 ```
 
 When prompted, select your connected device from the list.
 
 <img width="496" height="101" alt="image" src="https://github.com/user-attachments/assets/0a782ec7-1cfa-4123-9f42-5e5c3ef7d3d9" />
-
 
 > [!NOTE]
 >
@@ -514,8 +525,6 @@ With the app running on your physical device, test all the different audio outpu
 > 👀 **Try it:** Each time you change the audio route (by connecting or disconnecting audio devices), tap the button to verify the module correctly detects the new route. The module detects which output is currently connected, so you should see the route change immediately after plugging in or pairing a device.
 >
 > https://github.com/user-attachments/assets/4aa25453-a6d8-462b-af4f-3470a2ca67f7
-
-
 
 ## Next exercise
 

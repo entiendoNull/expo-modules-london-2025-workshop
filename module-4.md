@@ -58,24 +58,24 @@ export default function App() {
     "unknown"
   );
 
-+  useEventListener(ExpoAudioRoute, "onAudioRouteChange", ({ route }) => {
-+    setAudioRoute(route);
-+  });
++ useEventListener(ExpoAudioRoute, "onAudioRouteChange", ({ route }) => {
++   setAudioRoute(route);
++ });
 
--  React.useEffect(() => {
--    // Registers an event listener for audio route changes
--    const sub = ExpoAudioRoute.addListener(
--      "onAudioRouteChange",
--      ({ route }) => {
--        setAudioRoute(route);
--      }
--    );
+- React.useEffect(() => {
+-   // Registers an event listener for audio route changes
+-   const sub = ExpoAudioRoute.addListener(
+-     "onAudioRouteChange",
+-     ({ route }) => {
+-       setAudioRoute(route);
+-     }
+-   );
 -
--    return () => {
--      // Unregisters the event listener
--      sub.remove();
--    };
--  }, []);
+-   return () => {
+-     // Unregisters the event listener
+-     sub.remove();
+-   };
+- }, []);
 
   return (
     <>
@@ -115,14 +115,14 @@ export default function App() {
 -    setAudioRoute(route);
 -  });
 
-+ const { route } = useEvent(ExpoAudioRoute, "onAudioRouteChange", {
-+   route: initialRoute,
-+ });
++  const { route } = useEvent(ExpoAudioRoute, "onAudioRouteChange", {
++    route: initialRoute,
++  });
 
   return (
     <>
       <View style={styles.container}>
-+        <Text>{route}</Text>
++       <Text>{route}</Text>
 -       <Text>{audioRoute}</Text>
 -       <Button
 -         title="Get Audio Route"
@@ -178,7 +178,7 @@ OnStartObserving("onAudioRouteChange") {
 
 Since we changed native code, rebuild your app:
 
-```bash
+```sh
 npx expo run:ios --device
 # or
 npx expo run:android --device
@@ -467,7 +467,7 @@ Let's add web support to our application with a fallback implementation.
 
 First, add the necessary packages for web support:
 
-```bash
+```sh
 npx expo install react-dom react-native-web @expo/metro-runtime
 ```
 
@@ -475,13 +475,13 @@ npx expo install react-dom react-native-web @expo/metro-runtime
 
 Start the dev server and press `w` to open the web version:
 
-```bash
+```sh
 npx expo start --clear
 ```
 
 Press `w` in the terminal. Your browser will open, but the app will be blank with this error in the console:
 
-```
+```sh
 Uncaught Error: Cannot find native module 'ExpoAudioRoute'
 ```
 
@@ -489,7 +489,7 @@ Uncaught Error: Cannot find native module 'ExpoAudioRoute'
 
 Create a web-specific implementation that gracefully handles the unsupported platform:
 
-```bash
+```sh
 touch modules/expo-audio-route/src/ExpoAudioRouteModule.web.ts
 ```
 
@@ -538,7 +538,7 @@ Current Route: unknown
 
 You may need to restart your development server:
 
-```bash
+```sh
 npx expo start --clear
 ```
 

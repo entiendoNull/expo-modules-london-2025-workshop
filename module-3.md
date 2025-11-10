@@ -34,13 +34,13 @@ Add the event type definitions to describe what data will be sent when the audio
 ```diff
 export type AudioRoute = "speaker" | "wiredHeadset" | "bluetooth" | "unknown";
 
-+ export type RouteChangeEvent = {
-+   route: AudioRoute;
-+ };
++export type RouteChangeEvent = {
++  route: AudioRoute;
++};
 +
-+ export type ExpoAudioRouteModuleEvents = {
-+   onAudioRouteChange: (params: RouteChangeEvent) => void;
-+ };
++export type ExpoAudioRouteModuleEvents = {
++  onAudioRouteChange: (params: RouteChangeEvent) => void;
++};
 ```
 
 The `RouteChangeEvent` type describes the data payload that will be sent with each event (the new audio route), and `ExpoAudioRouteModuleEvents` defines the event name and its handler signature.
@@ -119,8 +119,8 @@ Now we'll create a method to listen for audio route changes on the native side. 
 First, add two properties at the class level (outside of `ModuleDefinition`:
 
 ```diff
-+ private let notificationCenter: NotificationCenter = .default
-+ private var routeChangeObserver: NSObjectProtocol?
++private let notificationCenter: NotificationCenter = .default
++private var routeChangeObserver: NSObjectProtocol?
 public func definition() -> ModuleDefinition { ... }
 ```
 
@@ -135,18 +135,19 @@ Add this method outside of your `ModuleDefinition`, for example above your `curr
 private let notificationCenter: NotificationCenter = .default
 private var routeChangeObserver: NSObjectProtocol?
 public func definition() -> ModuleDefinition { ... }
-+ private func startObservingRouteChanges() {
-+   func handleRouteChange(_: Notification) {
-+     self.sendEvent("onAudioRouteChange", ["route": self.currentRoute()])
-+   }
 +
-+   self.routeChangeObserver = NotificationCenter.default.addObserver(
-+     forName: AVAudioSession.routeChangeNotification,
-+     object: AVAudioSession.sharedInstance(),
-+     queue: .main,
-+     using: handleRouteChange
-+   )
-+ }
++private func startObservingRouteChanges() {
++  func handleRouteChange(_: Notification) {
++    self.sendEvent("onAudioRouteChange", ["route": self.currentRoute()])
++  }
++
++  self.routeChangeObserver = NotificationCenter.default.addObserver(
++    forName: AVAudioSession.routeChangeNotification,
++    object: AVAudioSession.sharedInstance(),
++    queue: .main,
++    using: handleRouteChange
++  )
++}
 private func currentRoute() -> String { ... }
 ```
 
@@ -175,10 +176,10 @@ import android.media.AudioManager
 Add this property at the class level (outside of `definition()`), right below your `audioManager` declaration:
 
 ```diff
-  private var audioManager: AudioManager? = null
-+ private var deviceCallback: AudioDeviceCallback? = null
+private var audioManager: AudioManager? = null
++private var deviceCallback: AudioDeviceCallback? = null
 
-  override fun definition() = ModuleDefinition { ... }
+override fun definition() = ModuleDefinition { ... }
 ```
 
 We declare this as `var` because we'll assign it when we start observing and may need to unregister it later.
@@ -188,25 +189,26 @@ We declare this as `var` because we'll assign it when we start observing and may
 Add this method outside of your `ModuleDefinition`, for example above your `currentRoute()` method:
 
 ```diff
-  private var audioManager: AudioManager? = null
-  private var deviceCallback: AudioDeviceCallback? = null
+private var audioManager: AudioManager? = null
+private var deviceCallback: AudioDeviceCallback? = null
 
-  override fun definition() = ModuleDefinition { ... }
-+ private fun startObservingRouteChanges() {
-+   if (deviceCallback != null || audioManager == null) return
+override fun definition() = ModuleDefinition { ... }
 +
-+   fun onChange() {
-+     sendEvent("onAudioRouteChange", mapOf("route" to currentRoute()))
-+   }
++private fun startObservingRouteChanges() {
++  if (deviceCallback != null || audioManager == null) return
 +
-+   deviceCallback = object : AudioDeviceCallback() {
-+     override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>) = onChange()
-+     override fun onAudioDevicesRemoved(removed: Array<out AudioDeviceInfo>) = onChange()
-+   }
++  fun onChange() {
++    sendEvent("onAudioRouteChange", mapOf("route" to currentRoute()))
++  }
 +
-+   audioManager?.registerAudioDeviceCallback(deviceCallback, null)
-+ }
-  private fun currentRoute(): String { ... }
++  deviceCallback = object : AudioDeviceCallback() {
++    override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>) = onChange()
++    override fun onAudioDevicesRemoved(removed: Array<out AudioDeviceInfo>) = onChange()
++  }
++
++  audioManager?.registerAudioDeviceCallback(deviceCallback, null)
++}
+private fun currentRoute(): String { ... }
 ```
 
 This method creates an `AudioDeviceCallback` that watches for when audio devices are added or removed (like plugging in headphones or connecting Bluetooth). When either happens, it calls `sendEvent()` to notify JavaScript.
@@ -227,13 +229,13 @@ Add this method right after `startObservingRouteChanges()`:
 ```diff
 private func startObservingRouteChanges() { ... }
 
-+ private func stopObservingRouteChanges() {
-+   if (routeChangeObserver == nil) {
-+     return
-+   }
-+   notificationCenter.removeObserver(routeChangeObserver!)
-+   routeChangeObserver = nil
-+ }
++private func stopObservingRouteChanges() {
++  if (routeChangeObserver == nil) {
++    return
++  }
++  notificationCenter.removeObserver(routeChangeObserver!)
++  routeChangeObserver = nil
++}
 
 private func currentRoute() -> String { ... }
 ```
@@ -252,11 +254,11 @@ Add this method right after `startObservingRouteChanges()`:
 ```diff
 private fun startObservingRouteChanges() { ... }
 
-+ private fun stopObservingRouteChanges() {
-+   if (deviceCallback == null || audioManager == null) return
-+   audioManager?.unregisterAudioDeviceCallback(deviceCallback)
-+   deviceCallback = null
-+ }
++private fun stopObservingRouteChanges() {
++  if (deviceCallback == null || audioManager == null) return
++  audioManager?.unregisterAudioDeviceCallback(deviceCallback)
++  deviceCallback = null
++}
 
 private fun currentRoute(): String { ... }
 ```
@@ -280,13 +282,13 @@ This methods should be placed _within_ your `ModuleDefinition`, for example belo
 
 ```diff
 AsyncFunction("getCurrentRouteAsync") { ... }
-+ OnStartObserving("onAudioRouteChange") {
-+   self.startObservingRouteChanges()
-+ }
++OnStartObserving("onAudioRouteChange") {
++  self.startObservingRouteChanges()
++}
 +
-+ OnStopObserving("onAudioRouteChange")  {
-+   self.stopObservingRouteChanges()
-+ }
++OnStopObserving("onAudioRouteChange")  {
++  self.stopObservingRouteChanges()
++}
 ```
 
 </details>
@@ -296,13 +298,13 @@ AsyncFunction("getCurrentRouteAsync") { ... }
 
 ```diff
 AsyncFunction("getCurrentRouteAsync") { ... }
-+ OnStartObserving("onAudioRouteChange") {
-+   startObservingRouteChanges()
-+ }
++OnStartObserving("onAudioRouteChange") {
++  startObservingRouteChanges()
++}
 +
-+ OnStopObserving("onAudioRouteChange")  {
-+   stopObservingRouteChanges()
-+ }
++OnStopObserving("onAudioRouteChange")  {
++  stopObservingRouteChanges()
++}
 ```
 
 </details>
@@ -319,13 +321,13 @@ Since we changed native code, we need to rebuild. As before, we'll test on a phy
 
 **iOS:**
 
-```bash
+```sh
 npx expo run:ios --device
 ```
 
 **Android:**
 
-```bash
+```sh
 npx expo run:android --device
 ```
 
@@ -337,41 +339,10 @@ Now let's implement the React side of event handling. We'll break this into clea
 
 Open `App.tsx`. We'll add an event listener that automatically updates the state when the audio route changes.
 
-**2.1 Add a useEffect hook**
+Inside the `useEffect`, call `addListener` to register for the `onAudioRouteChange` event.
 
-First, add a `useEffect` hook that will set up and clean up the event listener:
-
-```tsx
-React.useEffect(() => {
-  // Event listener setup will go here
-
-  return () => {
-    // Cleanup will go here
-  };
-}, []);
-```
-
-**2.2 Register the listener**
-
-Inside the `useEffect`, call `addListener` to register for the `onAudioRouteChange` event:
-
-```tsx
-React.useEffect(() => {
-  const sub = ExpoAudioRoute.addListener("onAudioRouteChange", ({ route }) => {
-    setAudioRoute(route);
-  });
-
-  return () => {
-    // Cleanup will go here
-  };
-}, []);
-```
-
-The listener receives a `RouteChangeEvent` object with a `route` property, which we use to update our component's state.
-
-**2.3 Add cleanup**
-
-Finally, return a cleanup function that removes the listener when the component unmounts:
+Finally, return a cleanup function that removes the listener when the component unmounts.
+This ensures we properly unregister the listener and stop the native observers.
 
 ```tsx
 React.useEffect(() => {
@@ -385,7 +356,12 @@ React.useEffect(() => {
 }, []);
 ```
 
-This ensures we properly unregister the listener and stop the native observers.
+> [!NOTE]
+>
+> - When you call `ExpoAudioRoute.addListener()`, Expo Modules automatically calls the `OnStartObserving` method
+> - The returned subscription object has a `remove()` method, which is essentially an unsubscribe function
+> - When you call `sub.remove()`, Expo Modules automatically calls the `OnStopObserving` method
+> - Remember: `OnStartObserving` and `OnStopObserving` are just regular methods in your module definition - Expo Modules handles calling them at the right time based on JavaScript subscription state
 
 <details>
 <summary>Full solution</summary>
@@ -452,7 +428,19 @@ With the app running on your device, test the automatic event detection:
 
 **Test 1: Initial state**
 
-1. Open the app - you should see the current audio route displayed. At this point it may be "unknown".
+1. Open the app - you should see `"unknown"` displayed. This is the initial state value we set in the code, not from an event.
+
+2. **Important:** The event listener typically does not send an initial event when you first register it. Events are only emitted when the audio route _changes_. However, on Android you may receive an immediate event because onAudioDevicesAdded is called with existing devices when the callback is first registered.
+
+3. To verify this behavior, add a `console.log` inside your event listener to see when events are actually emitted:
+
+````tsx
+const sub = ExpoAudioRoute.addListener("onAudioRouteChange", ({ route }) => {
+  console.log("Audio route changed to:", route);
+  setAudioRoute(route);
+});
+
+4. Check your terminal - on iOS you won't see any log until you actually change the audio route in the next tests, but on Android you may see an initial log.
 
 **Test 2: Connect Bluetooth**
 
@@ -476,7 +464,6 @@ With the app running on your device, test the automatic event detection:
 > 👀 **Try it:** Unlike Module 2 where you had to press a button to check the route, now the app automatically responds to audio route changes in real-time! This is the power of event-driven architecture.
 >
 > https://github.com/user-attachments/assets/554a7129-ed13-4e41-b92e-d0df14414a8a
-
 
 ## Bonus Exercise: Debug lifecycle hooks in Xcode / Android Studio
 
@@ -547,7 +534,7 @@ export default function App() {
     </View>
   );
 }
-```
+````
 
 <details>
   <summary>Xcode instructions</summary>
