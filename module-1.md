@@ -24,8 +24,15 @@
 
 Get started by creating a new Expo project
 
-```terminal
-npx create-expo-app@latest expo-custom-local-module-example --template blank-typescript
+```sh
+npx create-expo-app@latest expo-custom-local-module-example --template blank-typescript --no-install
+```
+
+If you want to use npm, you can omit the `--no-install` flag. Otherwise, keep it and install the dependencies with the package manager of your choice.
+
+```sh
+# For example
+bun install
 ```
 
 The name of our project would in this case be `expo-custom-local-module-example`. Feel free to name it however you like!
@@ -34,7 +41,7 @@ The name of our project would in this case be `expo-custom-local-module-example`
 
 This project will have custom native code, it can’t run inside Expo Go, so we'll want to start by creating a development build. The `expo-dev-client` package gives us an app similar to Expo Go - complete with debugging tools - but with our own native modules included.
 
-```terminal
+```sh
 npx expo install expo-dev-client
 ```
 
@@ -200,7 +207,7 @@ declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEven
 Add an event listener that shows an alert when the native code sends an event:
 
 ```tsx
-useEffect(() => {
+React.useEffect(() => {
   const sub = ExpoAudioRoute.addListener("onChange", (ev) => {
     Alert.alert("Event received", ev.value);
   });
@@ -289,8 +296,8 @@ In addition to functions and constants, Expo modules can expose custom native UI
 Update your import in `App.tsx` to include the view:
 
 ```diff
-- import ExpoAudioRoute from "./modules/expo-audio-route";
-+ import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
+-import ExpoAudioRoute from "./modules/expo-audio-route";
++import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
 ```
 
 #### 2. Render the Native View
@@ -329,7 +336,6 @@ Add a `style` prop with explicit width and height:
 > <img width="200" alt="Screenshot_1762425917" src="https://github.com/user-attachments/assets/9a6621c6-e62b-4e3c-be1e-f5b81280868c" />
 >
 > 👀 **Try changing the `url` prop** to a different website (like `"https://reactnative.dev"`) and save. The WebView should update to show the new site.
-
 
 <details>
 <summary>Full solution</summary>
@@ -416,9 +422,9 @@ Function("hello") {
   return "Hello world! 👋"
 }
 +
-+ Function("goodbye") {
-+   return "Goodbye! 👋"
-+ }
++Function("goodbye") {
++  return "Goodbye! 👋"
++}
 ```
 
 </details>
@@ -433,9 +439,9 @@ Function("hello") {
   "Hello world! 👋"
 }
 +
-+ Function("goodbye") {
-+   "Goodbye! 👋"
-+ }
++Function("goodbye") {
++  "Goodbye! 👋"
++}
 ```
 
 </details>
@@ -447,7 +453,7 @@ Function("hello") {
 ```diff
 <Text>{ExpoAudioRoute.PI}</Text>
 <Text>{ExpoAudioRoute.hello()}</Text>
-+ <Text>{ExpoAudioRoute.goodbye()}</Text>
++<Text>{ExpoAudioRoute.goodbye()}</Text>
 ```
 
 > [!NOTE]
@@ -472,7 +478,7 @@ Choose the platform you want to work with:
 
 **For iOS:**
 
-```terminal
+```sh
 xed ios
 ```
 
@@ -480,7 +486,7 @@ This opens the iOS workspace in Xcode.
 
 **For Android:**
 
-```terminal
+```sh
 open -a "Android Studio" android
 ```
 
