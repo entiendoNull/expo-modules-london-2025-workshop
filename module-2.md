@@ -1,6 +1,6 @@
 # Module 2
 
-In the second module, you'll create your own native module from scratch — an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. There are more audio available routes available, but for the sake of simplicity we'll be focusing on these ones as they're fairly straightforward to work with.
+In the second module, you'll create your own native module from scratch: an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. There are more audio available routes available, but for the sake of simplicity we'll be focusing on these specific ones as they're straightforward to work with.
 
 You'll clean up the boilerplate from the previous exercise, plan a simple TypeScript API, and then implement the native functionality in Swift and Kotlin. Finally, you'll build and test the module on a real device to confirm everything works as expected.
 
@@ -34,7 +34,7 @@ Delete the following files that we won't need:
 - `modules/expo-audio-route/src/ExpoAudioRouteView.tsx`
 - `modules/expo-audio-route/src/ExpoAudioRouteView.web.tsx`
 - `modules/expo-audio-route/src/ExpoAudioRouteModule.web.ts`
-- `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute`/ExpoAudioRouteView.kt
+- `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteView.kt`
 - `modules/expo-audio-route/ios/ExpoAudioRouteView.swift`
 
 You can either remove them manually or by running these commands in your terminal:
@@ -141,22 +141,26 @@ export * from "./src/ExpoAudioRoute.types";
 Remove all the example code from Module 1. Replace with this simple starter:
 
 ```tsx
-import { Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <View style={styles.container}>
+      <StatusBar style="auto" />
       <Text>Hello world!</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 ```
 
 Finally, run prebuild again to remove outdated files from the native projects.
@@ -470,10 +474,9 @@ export default function App() {
         <Text>Current Route: {audioRoute}</Text>
         <Button
           title="Get Audio Route"
-          onPress={() => {
-            ExpoAudioRoute.getCurrentRouteAsync().then((route) => {
-              setAudioRoute(route);
-            });
+          onPress={async () => {
+            const route = await ExpoAudioRoute.getCurrentRouteAsync();
+            setAudioRoute(route);
           }}
         />
       </View>
