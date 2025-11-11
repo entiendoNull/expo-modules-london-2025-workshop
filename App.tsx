@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Alert, Button, StyleSheet, Text, View } from 'react-native';
-import ExpoAudioRoute from "./modules/expo-audio-route";
+import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
 
 export default function App() {
   React.useEffect(() => {
@@ -25,6 +25,13 @@ export default function App() {
         onPress={() => {
           ExpoAudioRoute.setValueAsync("Hello World");
         }}
+      />
+      <ExpoAudioRouteView
+        onLoad={() => {
+          console.log("loaded");
+        }}
+        url="https://expo.dev"
+        style={{ width: 200, height: 200 }}
       />
     </View>
   );
