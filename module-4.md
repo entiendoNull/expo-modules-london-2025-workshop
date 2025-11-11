@@ -47,7 +47,7 @@ Without any changes to our native code, we can use the `useEventListener` hook i
 Replace your `useEffect` event handling with:
 
 ```diff
-import * as React from "react";
+import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import ExpoAudioRoute, { AudioRoute } from "./modules/expo-audio-route";
@@ -97,7 +97,7 @@ There's an even more elegant approach using `useEvent` that eliminates the need 
 **File:** `App.tsx`
 
 ```diff
-import * as React from "react";
+import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import ExpoAudioRoute, { AudioRoute } from "./modules/expo-audio-route";
@@ -142,9 +142,9 @@ Now `route` is automatically updated whenever the event fires, and you don't nee
 
 #### 3. Send initial value immediately
 
-There's one catch with `useEvent`: it only updates when the event fires, meaning you won't see the current route until it changes. Let's fix this by dispatching the current route immediately when someone starts listening.
+There's one catch with `useEvent`, it only updates when the event fires, meaning you won't see the current route until it changes. Let's fix this by dispatching the current route immediately when a listener is created.
 
-This requires just one line of native code—we'll send an event as soon as `OnStartObserving` is called.
+This requires just one line of native code; we'll send an event as soon as `OnStartObserving` is called.
 
 <details>
 <summary>Swift (iOS)</summary>
@@ -187,7 +187,7 @@ npx expo run:android --device
 Now when your app launches, the current audio route will appear immediately, and it will still update automatically when you connect or disconnect audio devices!
 
 <details>
-<summary>Full solution with useEvent</summary>
+<summary>Full solution with `useEvent`</summary>
 
 ```tsx
 import { StyleSheet, Text, View } from "react-native";
@@ -300,7 +300,7 @@ const { route } = useEvent(audioRoute, "onAudioRouteChange", {
 <summary>Full solution</summary>
 
 ```tsx
-import * as React from "react";
+import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useAudioRoute, AudioRoute } from "./modules/expo-audio-route";
@@ -399,7 +399,7 @@ Now consuming your module becomes incredibly simple!
 **File:** `App.tsx`
 
 ```tsx
-import * as React from "react";
+import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useAudioRouteChangedEvent } from "./modules/expo-audio-route";
@@ -437,14 +437,14 @@ With this implementation, developers can now consume your API in multiple ways d
 - **Direct module access**:
 
 ```tsx
-ExpoAudioRoute.getCurrentRouteAsync();
+await ExpoAudioRoute.getCurrentRouteAsync();
 ```
 
 - **Hook-based access**:
 
 ```tsx
-const audioRote = useAudioRoute();
-audioRoute.getCurrentRouteAsync();
+const audioRoute = useAudioRoute();
+await audioRoute.getCurrentRouteAsync();
 ```
 
 - **Event hook**:
@@ -453,7 +453,7 @@ audioRoute.getCurrentRouteAsync();
 const { route } = useAudioRouteChangedEvent();
 ```
 
-This flexibility makes your module accessible to different coding styles and use cases.
+This flexibility makes your module accessible for different coding styles and use cases.
 
 ## Exercise 2: Add web fallback support
 
