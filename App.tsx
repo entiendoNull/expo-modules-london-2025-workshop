@@ -5,6 +5,15 @@ import ExpoAudioRoute, { AudioRoute } from "./modules/expo-audio-route";
 
 export default function App() {
   const [audioRoute, setAudioRoute] = React.useState<AudioRoute>("unknown");
+  React.useEffect(() => {
+    const sub = ExpoAudioRoute.addListener("onAudioRouteChange", ({ route }) => {
+      setAudioRoute(route);
+    });
+
+    return () => {
+      sub.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
