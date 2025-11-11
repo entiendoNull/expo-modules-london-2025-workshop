@@ -157,23 +157,27 @@ Now add a second `<Text>` component that calls the `hello()` function:
 
 ```tsx
 import { Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import ExpoAudioRoute from "./modules/expo-audio-route";
 
 export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <View style={styles.container}>
+      <StatusBar style="auto" />
       <Text>{ExpoAudioRoute.PI}</Text>
       <Text>{ExpoAudioRoute.hello()}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 ```
 
 </details>
@@ -244,8 +248,9 @@ The example module requires us to manually trigger the `onChange` event. Add a b
 <summary>Full solution</summary>
 
 ```tsx
-import * as React from "react";
-import { Button, Text, View, Alert } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import ExpoAudioRoute from "./modules/expo-audio-route";
 
 export default function App() {
@@ -260,14 +265,8 @@ export default function App() {
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <View style={styles.container}>
+      <StatusBar style="auto" />
       <Text>{ExpoAudioRoute.PI}</Text>
       <Text>{ExpoAudioRoute.hello()}</Text>
       <Button
@@ -279,6 +278,15 @@ export default function App() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 ```
 
 </details>
@@ -331,7 +339,7 @@ Add a `style` prop with explicit width and height:
 
 > [!NOTE]
 >
-> 👀 **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page > finishes loading.
+> 👀 **Try it:** Save your changes and check your app. You should see the Expo website loaded inside a WebView component in the center of your screen. Check your console/logs - you should see "loaded" printed when the page finishes loading.
 >
 > <img width="200" alt="Screenshot_1762425917" src="https://github.com/user-attachments/assets/9a6621c6-e62b-4e3c-be1e-f5b81280868c" />
 >
@@ -341,8 +349,9 @@ Add a `style` prop with explicit width and height:
 <summary>Full solution</summary>
 
 ```tsx
-import * as React from "react";
-import { Button, Text, View, Alert } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import ExpoAudioRoute, { ExpoAudioRouteView } from "./modules/expo-audio-route";
 
 export default function App() {
@@ -357,14 +366,8 @@ export default function App() {
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <View style={styles.container}>
+      <StatusBar style="auto" />
       <Text>{ExpoAudioRoute.PI}</Text>
       <Text>{ExpoAudioRoute.hello()}</Text>
       <Button
@@ -383,6 +386,15 @@ export default function App() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 ```
 
 </details>
@@ -490,20 +502,23 @@ This opens the iOS workspace in Xcode.
 open -a "Android Studio" android
 ```
 
-Alternatively, open Android Studio manually and select "Open" → navigate to the `android` directory.
+Alternatively, open Android Studio manually and select **Open**, then navigate to the `android` directory.
 
 #### 2. Locate Your Module Files
 
 **In Xcode:**
 
-1. In the Project Navigator, look under `Pods` → `Development Pods` → `ExpoAudioRoute`
+1. In the Project Navigator, look under **Pods > Development Pods > ExpoAudioRoute**
 2. Here you'll find `ExpoAudioRouteModule.swift` and `ExpoAudioRouteView.swift`
+
+<img width="320" height="429" alt="Xcode Project Navigator showing the new Expo Module" src="https://github.com/user-attachments/assets/f374aa55-183d-45ae-8b07-b1f6cc285e35" />
 
 **In Android Studio:**
 
-1. In the Project view, expand `android` → `expo-audio-route`
-2. Navigate to `src` → `main` → `java` → `expo` → `modules` → `audioroute`
-3. Here you'll find `ExpoAudioRouteModule.kt` and `ExpoAudioRouteView.kt`
+1. In the Project view, look under **expo-audio-route > kotlin+java > expo.modules.audioroute**
+2. Here you'll find `ExpoAudioRouteModule` and `ExpoAudioRouteView`
+
+<img width="337" height="337" alt="Android Project Tool Window showing the new Expo Module" src="https://github.com/user-attachments/assets/94ba9eab-c81c-4636-b67c-e817f3b9fee9" />
 
 #### 3. Build and Run from the IDE
 
@@ -512,7 +527,7 @@ Alternatively, open Android Studio manually and select "Open" → navigate to th
 1. Select a simulator from the device dropdown at the top
 2. Press the Play button to build and run
 
-<img width="496" height="45" alt="image" src="https://github.com/user-attachments/assets/87f14777-17ea-4474-a86e-653a681243d1" />
+<img width="627" height="38" alt="Screenshot 2025-11-11 at 00 47 46" src="https://github.com/user-attachments/assets/e8055a1b-9210-44f2-8aa2-7cf3955bf3c1" />
 
 **In Android Studio:**
 
