@@ -46,7 +46,7 @@ This project will have custom native code, it can’t run inside Expo Go, so we'
 npx expo install expo-dev-client
 ```
 
-#### 3 Create new Expo Module
+#### 3. Create new Expo Module
 
 When prompted the name I’ll be using is `expo-audio-route`, and then I'll just go ahead and accept the suggestions for the subsequent prompts.
 
