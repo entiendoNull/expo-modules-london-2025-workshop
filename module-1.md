@@ -95,6 +95,34 @@ Now that your module is built and running, let's explore how to use it.
 
 Your new module, `expo-audio-route`, lives inside your project's `modules` directory.
 
+Here's the module structure with descriptions of each file:
+
+```
+expo-audio-route
+├──android
+│  ├──build.gradle                               # Android dependencies and build configuration
+│  └──src
+│     └──main
+│        ├──AndroidManifest.xml                  # Android manifest for the module
+│        └──java
+│           └──expo
+│              └──modules
+│                 └──audioroute
+│                    ├──ExpoAudioRouteModule.kt  # Android entry point for the Expo Module
+│                    └──ExpoAudioRouteView.kt    # Optional. Contains a view to exposed by the Expo Module
+├──expo-module.config.json
+├──index.ts
+├──ios                                           # Barrel file with all JavaScript exports from the Expo Module
+│  ├──ExpoAudioRoute.podspec                     # iOS dependencies and build configuration
+│  ├──ExpoAudioRouteModule.swift                 # iOS entry point for the Expo Module
+│  └──ExpoAudioRouteView.swift                   # Optional. Contains a view to exposed by the Expo Module
+└──src
+   ├──ExpoAudioRoute.types.ts                    # Optional. Contains types to be used with the Expo Module
+   ├──ExpoAudioRouteModule.ts                    # JavaScript entry point for the Expo Module
+   ├──ExpoAudioRouteModule.web.ts                # Optional. Web fallback for the Expo Module
+   └──ExpoAudioRouteView.tsx                     # JavaScript entry point for a view exposed by the Expo Module
+```
+
 ### Background: Understanding the Module API
 
 The `ExpoAudioRouteModule` file (`modules/expo-audio-route/src/ExpoAudioRouteModule.ts`) defines what functionality is available from the module's imperative API:
