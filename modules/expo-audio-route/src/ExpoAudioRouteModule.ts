@@ -5,5 +5,10 @@ declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEven
   getCurrentRouteAsync(): Promise<AudioRoute>;
 }
 
-// This call loads the native module object from the JSI.
-export default requireNativeModule<ExpoAudioRouteModule>("ExpoAudioRoute");
+const nativeModule = requireNativeModule<ExpoAudioRouteModule>("ExpoAudioRoute");
+
+export function useAudioRoute() {
+  return nativeModule;
+}
+
+export default nativeModule;
