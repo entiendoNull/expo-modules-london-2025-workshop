@@ -5,11 +5,16 @@ import expo.modules.kotlin.modules.ModuleDefinition
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import android.media.AudioDeviceCallback
 
 class ExpoAudioRouteModule : Module() {
   // Reference to the Android AudioManager system service.
   // This is initialized in the OnCreate lifecycle method and used to query audio routing information.
   private var audioManager: AudioManager? = null
+
+  // Callback instance for monitoring audio device connection/disconnection events.
+  // This is created when JavaScript starts observing route changes and removed when observation stops.
+  private var deviceCallback: AudioDeviceCallback? = null
 
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
@@ -19,6 +24,9 @@ class ExpoAudioRouteModule : Module() {
     // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
     // The module will be accessible from `requireNativeModule('ExpoAudioRoute')` in JavaScript.
     Name("ExpoAudioRoute")
+
+    // Declares an event that JavaScript can subscribe to for audio route change notifications.
+    Events("onAudioRouteChange")
 
     // Module lifecycle callback that executes when the module is created.
     // Initializes the audioManager by retrieving the AUDIO_SERVICE from the Android system services.
@@ -32,6 +40,69 @@ class ExpoAudioRouteModule : Module() {
     AsyncFunction("getCurrentRouteAsync") {
       currentRoute()
     }
+
+    // Module lifecycle callback that executes when JavaScript begins listening to the onAudioRouteChange event.
+    // This is called automatically when the first event listener is added on the JavaScript side.
+    OnStartObserving("onAudioRouteChange") {
+      startObservingRouteChanges()
+    }
+
+    // Module lifecycle callback that executes when JavaScript stops listening to the onAudioRouteChange event.
+    // This is called automatically when the last event listener is removed on the JavaScript side.
+    OnStopObserving("onAudioRouteChange")  {
+      stopObservingRouteChanges()
+    }
+  }
+
+  /**
+  * Registers an AudioDeviceCallback with the Android AudioManager to monitor audio routing changes.
+  *
+  * The callback responds to two events:
+  * - onAudioDevicesAdded: Triggered when new audio devices are connected (e.g., plugging in headphones)
+  * - onAudioDevicesRemoved: Triggered when audio devices are disconnected (e.g., unplugging headphones)
+  *
+  * When either event occurs, the current audio route is determined and sent to JavaScript
+  * via the "onAudioRouteChange" event.
+  *
+  * Implementation notes:
+  * - Returns early if AudioManager is unavailable
+  * - Prevents duplicate callbacks by checking if one already exists
+  * - Callback is registered with null handler (uses calling thread)
+  * - Each route change event includes the updated route in the payload
+  */
+  private fun startObservingRouteChanges() {
+    if (deviceCallback != null || audioManager == null) return
+
+    fun onChange() {
+      sendEvent("onAudioRouteChange", mapOf("route" to currentRoute()))
+    }
+
+    deviceCallback = object : AudioDeviceCallback() {
+      override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>) = onChange()
+      override fun onAudioDevicesRemoved(removed: Array<out AudioDeviceInfo>) = onChange()
+    }
+
+    audioManager?.registerAudioDeviceCallback(deviceCallback, null)
+  }
+
+  /**
+  * Unregisters the AudioDeviceCallback to stop monitoring audio routing changes.
+  *
+  * This cleanup function:
+  * - Removes the callback from the AudioManager to prevent memory leaks
+  * - Nullifies the deviceCallback reference to free resources
+  * - Is safe to call even if no callback is currently registered
+  *
+  * Should be called when:
+  * - JavaScript removes all event listeners for onAudioRouteChange
+  * - The module is being destroyed or cleaned up
+  *
+  * Returns early if AudioManager is unavailable or no callback exists.
+  */
+  private fun stopObservingRouteChanges() {
+    if (deviceCallback == null || audioManager == null) return
+    audioManager?.unregisterAudioDeviceCallback(deviceCallback)
+    deviceCallback = null
   }
 
   /**
