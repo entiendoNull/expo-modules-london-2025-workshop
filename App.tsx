@@ -2,26 +2,20 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import ExpoAudioRoute, { AudioRoute } from "./modules/expo-audio-route";
-import { useEventListener } from "expo";
+import { useEvent } from "expo";
+
+const initialRoute: AudioRoute = "unknown";
 
 export default function App() {
-  const [audioRoute, setAudioRoute] = React.useState<AudioRoute>("unknown");
 
-  useEventListener(ExpoAudioRoute, "onAudioRouteChange", ({ route }) => {
-    setAudioRoute(route);
+  const { route } = useEvent(ExpoAudioRoute, "onAudioRouteChange", {
+    route: initialRoute,
   });
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text>Current Route: {audioRoute}</Text>
-      <Button
-        title="Get Audio Route"
-        onPress={async () => {
-          const route = await ExpoAudioRoute.getCurrentRouteAsync();
-          setAudioRoute(route);
-        }}
-      />
+      <Text>Current Route: {route}</Text>
     </View>
   );
 }
