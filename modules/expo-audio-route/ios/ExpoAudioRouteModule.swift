@@ -34,6 +34,7 @@ public class ExpoAudioRouteModule: Module {
     // Module lifecycle callback that executes when JavaScript begins listening to the onAudioRouteChange event.
     // This is called automatically when the first event listener is added on the JavaScript side.
     OnStartObserving("onAudioRouteChange") {
+      self.sendEvent("onAudioRouteChange", ["route": self.currentRoute()])
       self.startObservingRouteChanges()
     }
 
