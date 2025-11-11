@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["ExpoAudioRouteModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.audioroute.ExpoAudioRouteModule"]
+  }
+}
