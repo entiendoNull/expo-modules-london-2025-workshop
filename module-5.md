@@ -119,7 +119,7 @@ touch modules/expo-audio-route/ios/ExpoAudioRouteView.swift
 ```
 
 <details>
-<summary>Swift</summary>
+<summary>Swift (iOS)</summary>
 
 **File:** `modules/expo-audio-route/ios/ExpoAudioRouteView.swift`
 
@@ -180,7 +180,7 @@ struct ExpoAudioRouteView: ExpoSwiftUI.View, ExpoSwiftUI.WithHostingView {
 Now let's update the Swift module definition to include our view:
 
 <details>
-<summary>Swift</summary>
+<summary>Swift (iOS)</summary>
 
 **File:** `modules/expo-audio-route/ios/ExpoAudioRouteModule.swift`
 
@@ -423,7 +423,7 @@ touch modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/Exp
 ```
 
 <details>
-<summary>Kotlin</summary>
+<summary>Kotlin (Android)</summary>
 
 **File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteView.kt`
 
@@ -492,7 +492,7 @@ class ExpoAudioRouteView(context: Context, appContext: AppContext) :
 Now let's update the module definition to include our view:
 
 <details>
-<summary>Kotlin</summary>
+<summary>Kotlin (Android)</summary>
 
 **File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt`
 

@@ -438,7 +438,7 @@ Now let's add our own functionality to the module! Because we'll be making chang
 
 First, declare the new function in the TypeScript interface
 
-**File**: modules/expo-audio-route/src/ExpoAudioRouteModule.ts
+**File**: `modules/expo-audio-route/src/ExpoAudioRouteModule.ts`
 
 ```diff
 declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEvents> {
@@ -456,7 +456,7 @@ Add the `goodbye()` function to iOS and/or Android native modules.
 <details>
 <summary>Swift</summary>
 
-**File:** modules/expo-audio-route/ios/ExpoAudioRouteModule.swift
+**File:** `modules/expo-audio-route/ios/ExpoAudioRouteModule.swift`
 
 ```diff
 Function("hello") {
@@ -473,7 +473,7 @@ Function("hello") {
 <details>
 <summary>Kotlin</summary>
 
-**File:** modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt
+**File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt`
 
 ```diff
 Function("hello") {
@@ -489,7 +489,7 @@ Function("hello") {
 
 #### 2. Call it from React
 
-**File**: App.tsx
+**File**: `App.tsx`
 
 ```diff
 <Text>{ExpoAudioRoute.PI}</Text>
