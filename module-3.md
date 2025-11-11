@@ -1,6 +1,6 @@
 # Module 3
 
-In the third module, you'll extend your audio route detector to handle real-time updates. You'll add native event support so your app can respond automatically when the audio route changes — for example, when you plug in headphones or connect a Bluetooth speaker. You'll plan the event API, implement the listener logic in both Swift and Kotlin, and wire it up in React using event subscriptions.
+In the third module, you'll extend your audio route detector to handle real-time updates. You'll add native event support so your app can respond automatically when the audio route changes — for example, when you plug in headphones or connect a Bluetooth speaker. You'll plan the event API, implement the listener logic in both Swift and Kotlin, and wire it up to React using event subscriptions.
 
 ### Goals
 
@@ -19,7 +19,7 @@ In the third module, you'll extend your audio route detector to handle real-time
 
 ## Exercise 0: Plan and define the event API
 
-The first part of our module is now ready and we can query for the current audio route. In this exercise, we'll define the event types that will allow our module to notify JavaScript when the audio route changes.
+The first part of our module is now ready, and we can now query for the current audio route. In this exercise, we'll define the event types that will allow our module to notify JavaScript when the audio route changes.
 
 Just as in Module 2, we'll start by defining the API that we would like to expose. We've already defined the available audio routes, so now we'll add the event payloads and the shape of the events our module will emit.
 
@@ -67,7 +67,7 @@ import { NativeModule, requireNativeModule } from "expo";
 export default requireNativeModule<ExpoAudioRouteModule>("ExpoAudioRoute");
 ```
 
-With this change, TypeScript will now know about the `onAudioRouteChange` event. We don't need to explicitly declare `addListener` or `removeListener`—these are already provided by Expo Modules with full type safety.
+With this change, TypeScript will now know about the `onAudioRouteChange` event. We don't need to explicitly declare `addListener` or `removeListener`; these are already provided by Expo Modules with full type safety.
 
 ## Exercise 1: Implement native event support
 
@@ -77,7 +77,7 @@ Now we'll implement the native side of event handling. This involves setting up 
 
 #### 1. Define the event name
 
-Let's start with defining the event names that the module can send to JavaScript. This part is exactly the same in both `swift` and `kotlin` and it should be placed _within_ your `ModuleDefinition`.`:
+Let's start with defining the event names that the module can send to JavaScript. This part is exactly the same in both Swift and Kotlin and it should be placed _within_ your `ModuleDefinition`s.`:
 
 **Swift:**
 
@@ -125,7 +125,7 @@ public func definition() -> ModuleDefinition { ... }
 ```
 
 - `notificationCenter` is declared as `let` because it's a constant reference to the notification system
-- `routeChangeObserver` is declared as `var` because we need to store and potentially remove the observer later (it starts as `nil`)
+- `routeChangeObserver` is declared as `var` because we need to store and potentially remove the observer later (it is initialized as `nil`)
 
 **2.2 Create the start observing method**
 
