@@ -254,26 +254,26 @@ public class ExpoAudioRouteModule: Module {
     Name("ExpoAudioRoute")
   }
 
-+  private func currentRoute() -> String {
-+    let session = AVAudioSession.sharedInstance()
-+    let outputs = session.currentRoute.outputs
++ private func currentRoute() -> String {
++   let session = AVAudioSession.sharedInstance()
++   let outputs = session.currentRoute.outputs
 +
-+    let first = outputs.first
-+    if (first == nil) {
-+      return "unknown"
-+    }
++   let first = outputs.first
++   if (first == nil) {
++     return "unknown"
++   }
 +
-+    switch (first?.portType) {
-+      case .headphones, .headsetMic:
-+        return "wiredHeadset"
-+      case .bluetoothA2DP, .bluetoothLE, .bluetoothHFP:
-+        return "bluetooth"
-+      case .builtInSpeaker:
-+        return "speaker"
-+      default:
-+        return "unknown"
-+    }
-+  }
++   switch (first?.portType) {
++     case .headphones, .headsetMic:
++       return "wiredHeadset"
++     case .bluetoothA2DP, .bluetoothLE, .bluetoothHFP:
++       return "bluetooth"
++     case .builtInSpeaker:
++       return "speaker"
++     default:
++       return "unknown"
++   }
++ }
 }
 ```
 
@@ -409,9 +409,9 @@ override fun definition() = ModuleDefinition {
     audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
   }
 
-+  AsyncFunction("getCurrentRouteAsync") {
-+    currentRoute()
-+  }
++ AsyncFunction("getCurrentRouteAsync") {
++   currentRoute()
++ }
 }
 ```
 
