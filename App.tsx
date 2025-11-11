@@ -1,11 +1,22 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import ExpoAudioRoute, { AudioRoute } from "./modules/expo-audio-route";
 
 export default function App() {
+  const [audioRoute, setAudioRoute] = React.useState<AudioRoute>("unknown");
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text>Hello world!</Text>
+      <Text>Current Route: {audioRoute}</Text>
+      <Button
+        title="Get Audio Route"
+        onPress={async () => {
+          const route = await ExpoAudioRoute.getCurrentRouteAsync();
+          setAudioRoute(route);
+        }}
+      />
     </View>
   );
 }
