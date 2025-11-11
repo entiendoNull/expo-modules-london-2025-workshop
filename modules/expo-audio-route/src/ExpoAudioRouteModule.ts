@@ -1,7 +1,7 @@
 import { NativeModule, requireNativeModule } from "expo";
-import { AudioRoute } from "./ExpoAudioRoute.types";
+import { AudioRoute, ExpoAudioRouteModuleEvents } from "./ExpoAudioRoute.types";
 
-declare class ExpoAudioRouteModule extends NativeModule {
+declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEvents> {
   getCurrentRouteAsync(): Promise<AudioRoute>;
 }
 
