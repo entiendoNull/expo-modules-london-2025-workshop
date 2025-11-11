@@ -345,53 +345,57 @@ override fun definition() = ModuleDefinition {
 Next, create a helper method called `currentRoute()`. This method should be placed outside of your `ModuleDefinition` (as a private method of the class).
 
 ```diff
-override fun definition() = ModuleDefinition {
-  Name("ExpoAudioRoute")
+class ExpoAudioRouteModule : Module() {
+  private var audioManager: AudioManager? = null
 
-  OnCreate {
-    audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+  override fun definition() = ModuleDefinition {
+    Name("ExpoAudioRoute")
+
+    OnCreate {
+      audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
   }
-}
 
-+private fun currentRoute(): String {
-+  val outputs = audioManager?.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
++ private fun currentRoute(): String {
++   val outputs = audioManager?.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
 +
-+  if(outputs.isNullOrEmpty()) return "unknown"
++   if(outputs.isNullOrEmpty()) return "unknown"
 +
-+  // Check in priority order: wired > bluetooth > speaker
-+  val wiredTypes = listOf(
-+    AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
-+    AudioDeviceInfo.TYPE_WIRED_HEADSET,
-+    AudioDeviceInfo.TYPE_USB_HEADSET
-+  )
++   // Check in priority order: wired > bluetooth > speaker
++   val wiredTypes = listOf(
++     AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
++     AudioDeviceInfo.TYPE_WIRED_HEADSET,
++     AudioDeviceInfo.TYPE_USB_HEADSET
++   )
 +
-+  val bluetoothTypes = listOf(
-+    AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
-+    AudioDeviceInfo.TYPE_BLUETOOTH_SCO
-+  )
++   val bluetoothTypes = listOf(
++     AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
++     AudioDeviceInfo.TYPE_BLUETOOTH_SCO
++   )
 +
-+  val speakerTypes = listOf(
-+    AudioDeviceInfo.TYPE_BUILTIN_SPEAKER,
-+    AudioDeviceInfo.TYPE_BUILTIN_EARPIECE
-+  )
++   val speakerTypes = listOf(
++     AudioDeviceInfo.TYPE_BUILTIN_SPEAKER,
++     AudioDeviceInfo.TYPE_BUILTIN_EARPIECE
++   )
 +
-+  val wired = outputs.firstOrNull { it.type in wiredTypes }
-+  val bluetooth = outputs.firstOrNull { it.type in bluetoothTypes }
-+  val speaker = outputs.firstOrNull { it.type in speakerTypes }
++   val wired = outputs.firstOrNull { it.type in wiredTypes }
++   val bluetooth = outputs.firstOrNull { it.type in bluetoothTypes }
++   val speaker = outputs.firstOrNull { it.type in speakerTypes }
 +
-+  val device = when {
-+    wired != null -> wired
-+    bluetooth != null -> bluetooth
-+    speaker != null -> speaker
-+    else -> null
-+  }
++   val device = when {
++     wired != null -> wired
++     bluetooth != null -> bluetooth
++     speaker != null -> speaker
++     else -> null
++   }
 +
-+  return when (device?.type) {
-+    in wiredTypes -> "wiredHeadset"
-+    in bluetoothTypes -> "bluetooth"
-+    in speakerTypes -> "speaker"
-+    else -> "unknown"
-+  }
++   return when (device?.type) {
++     in wiredTypes -> "wiredHeadset"
++     in bluetoothTypes -> "bluetooth"
++     in speakerTypes -> "speaker"
++     else -> "unknown"
++   }
++ }
 }
 ```
 
