@@ -1,3 +1,3 @@
 export { default } from "./src/ExpoAudioRouteModule";
 export * from "./src/ExpoAudioRoute.types";
-export { useAudioRoute } from "./src/ExpoAudioRouteModule";
+export { useAudioRoute, useAudioRouteChangedEvent } from "./src/ExpoAudioRouteModule";
