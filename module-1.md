@@ -32,6 +32,7 @@ If you want to use npm, you can omit the `--no-install` flag. Otherwise, keep it
 
 ```sh
 # For example
+cd expo-custom-local-module-example
 bun install
 ```
 
@@ -75,7 +76,7 @@ npx expo prebuild --clean
 
 You can build your project locally by running the compile commands provided by the Expo CLI. These commands generate the `ios/` and `android/` directories that Xcode and Android Studio use to compile your app.
 
-The first time your build an app it will also trigger a prebuild if the `ios/` and `android/` directories are not present in the project. You can also manually trigger a prebuild with `npx expo prebuild`.
+The first time your build an app it will also trigger a prebuild if the `ios/` and `android/` directories are not present in the project. You can also manually trigger a prebuild with `npx expo prebuild --clean`.
 
 ```
 npx expo run:ios
