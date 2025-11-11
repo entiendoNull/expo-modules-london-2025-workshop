@@ -20,6 +20,7 @@ export default function App() {
       <StatusBar style="auto" />
       <Text>{ExpoAudioRoute.PI}</Text>
       <Text>{ExpoAudioRoute.hello()}</Text>
+      <Text>{ExpoAudioRoute.goodbye()}</Text>
       <Button
         title="Click me"
         onPress={() => {

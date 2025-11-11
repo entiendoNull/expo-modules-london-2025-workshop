@@ -5,6 +5,7 @@ import { ExpoAudioRouteModuleEvents } from './ExpoAudioRoute.types';
 declare class ExpoAudioRouteModule extends NativeModule<ExpoAudioRouteModuleEvents> {
   PI: number;
   hello(): string;
+  goodbye(): string;
   setValueAsync(value: string): Promise<void>;
 }
 
