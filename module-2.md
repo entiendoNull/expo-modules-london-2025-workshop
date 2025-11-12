@@ -334,6 +334,8 @@ Initialize the `AudioManager` using the `OnCreate` lifecycle method _within_ you
 override fun definition() = ModuleDefinition {
   Name("ExpoAudioRoute")
 
++ // App context is the Expo Module's API context that provices access to various system services. It's available automatically in all Expo modules that extend the Module class.
++ // The reactContext provides access to the system Android Context which is used for Android-specific operations.
 + OnCreate {
 +   audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 + }
