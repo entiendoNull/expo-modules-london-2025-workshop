@@ -79,11 +79,11 @@ You can build your project locally by running the compile commands provided by t
 The first time your build an app it will also trigger a prebuild if the `ios/` and `android/` directories are not present in the project. You can also manually trigger a prebuild with `npx expo prebuild --clean`.
 
 ```
-npx expo run:ios
+npx expo run:ios --device
 
 # or
 
-npx expo run:android
+npx expo run:android --device
 ```
 
 > [!NOTE]
