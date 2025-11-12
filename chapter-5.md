@@ -1,6 +1,6 @@
-# Module 5
+# Chapter 5
 
-In this module, we'll learn how to create a native view for iOS (using SwiftUI), and Android (using Jetpack Compose), and use it in our Expo app. While the imperative APIs we built in earlier modules exposed functions and events, native views work differently. A native view is a React component that renders native UI directly, while still giving us the ability to pass props from JavaScript.
+In this chapter, we'll learn how to create a native view for iOS (using SwiftUI), and Android (using Jetpack Compose), and use it in our Expo app. While the imperative APIs we built in earlier chapters exposed functions and events, native views work differently. A native view is a React component that renders native UI directly, while still giving us the ability to pass props from JavaScript.
 
 ### Goals
 
@@ -18,7 +18,7 @@ In this module, we'll learn how to create a native view for iOS (using SwiftUI),
 
 ## Exercise 1: Define the JavaScript API
 
-Just like we did in Module 2, let's begin by defining the JavaScript API for our view component. We'll do this by adding types and the native binding to our Expo Module.
+Just like we did in Chapter 2, let's begin by defining the JavaScript API for our view component. We'll do this by adding types and the native binding to our Expo Module.
 
 ### Tasks
 
@@ -636,6 +636,6 @@ With the app running on your device:
 
 ## Further reading
 
-The examples used in this module are simplified versions of the `<Picker />` component from [`@expo/ui/swift-ui`](https://github.com/expo/expo/blob/sdk-54/packages/expo-ui/ios/PickerView.swift) and [`@expo/ui/jetpack-compose`](https://github.com/expo/expo/blob/sdk-54/packages/expo-ui/android/src/main/java/expo/modules/ui/PickerView.kt) in SDK 54. We strongly recommend checking out their source code to learn more.
+The examples used in this chapter are simplified versions of the `<Picker />` component from [`@expo/ui/swift-ui`](https://github.com/expo/expo/blob/sdk-54/packages/expo-ui/ios/PickerView.swift) and [`@expo/ui/jetpack-compose`](https://github.com/expo/expo/blob/sdk-54/packages/expo-ui/android/src/main/java/expo/modules/ui/PickerView.kt) in SDK 54. We strongly recommend checking out their source code to learn more.
 
 From SDK 55, wrapping bridged SwiftUI and Jetpack Compose views with a `<Host />` component will be **required**. This is because the `style` prop cannot be applied directly to bridged views. Additionally, in our SwiftUI view, we'd drop conformance with the `ExpoSwiftUI.WithHostingView` protocol, and in our Jetpack Compose view, we'd set `withHostingView = false` in the component's constructor.

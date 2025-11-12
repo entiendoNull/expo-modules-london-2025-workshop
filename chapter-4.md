@@ -1,6 +1,6 @@
-# Module 4
+# Chapter 4
 
-In the fourth module, you'll refine your Expo module to make it cleaner, more convenient, and easier to use. You'll replace manual event subscriptions with Expo’s `useEvent` and `useEventListener` hooks, simplify your React code, and expose your module as custom hooks for even better developer experience. Finally, you’ll add a simple web fallback so the module behaves gracefully on unsupported platforms.
+In the fourth chapter, you'll refine your Expo module to make it cleaner, more convenient, and easier to use. You'll replace manual event subscriptions with Expo’s `useEvent` and `useEventListener` hooks, simplify your React code, and expose your module as custom hooks for even better developer experience. Finally, you’ll add a simple web fallback so the module behaves gracefully on unsupported platforms.
 
 ### Goals
 
@@ -544,4 +544,4 @@ npx expo start --clear
 
 ## Next exercise
 
-[Module 5 👉](./module-5.md)
+[Chapter 5 👉](./chapter-5.md)

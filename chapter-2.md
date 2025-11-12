@@ -1,6 +1,6 @@
-# Module 2
+# Chapter 2
 
-In the second module, you'll create your own native module from scratch: an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. There are more audio available routes available, but for the sake of simplicity we'll be focusing on these specific ones as they're straightforward to work with.
+In the second chapter, you'll create your own native module from scratch: an audio route detector that tells your app whether sound is playing through the speaker, wired headphones, or Bluetooth. There are more audio available routes available, but for the sake of simplicity we'll be focusing on these specific ones as they're straightforward to work with.
 
 You'll clean up the boilerplate from the previous exercise, plan a simple TypeScript API, and then implement the native functionality in Swift and Kotlin. Finally, you'll build and test the module on a real device to confirm everything works as expected.
 
@@ -537,4 +537,4 @@ With the app running on your physical device, test all the different audio outpu
 
 ## Next exercise
 
-[Module 3 👉](./module-3.md)
+[Chapter 3 👉](./chapter-3.md)

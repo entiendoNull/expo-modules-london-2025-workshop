@@ -1,4 +1,4 @@
-# Module 1
+# Chapter 1
 
 ### Goals
 
@@ -573,4 +573,4 @@ Alternatively, open Android Studio manually and select **Open**, then navigate t
 
 ## Next exercise
 
-[Module 2 👉](./module-2.md)
+[Chapter 2 👉](./chapter-2.md)

@@ -2,11 +2,12 @@
 
 ## How to use this repo
 
-1. Start at the first module by opening up the file called **module-1.md**.
-2. Proceed to **module-2.md**
+1. Start at the first chapter by opening up the file called **chapter-1.md**.
+2. Proceed to **chapter-2.md**
 3. etc.
 
 ## Prerequisites
+
 You will want to be able to make a native build on both iOS and Android emulators, and at least one device of either platform.
 
 - A local development environment ready for native iOS and Android React Native / Expo development, capable of running the `npx expo run:ios` and `npx expo run:android`, including recent versions of:
@@ -27,7 +28,7 @@ You will want to be able to make a native build on both iOS and Android emulator
     - If a Mac isn't available to you, at least make sure your Android native setup is good. We may be able to help you make it through parts of the iOS exercises with EAS Build, provided you have an iOS device and paid Apple developer account.
   - An iOS or Android device. Highly recommended to bring devices for both platforms if have them available.
   - Recommended: your bluetooth earbuds/headphones. You can use these to do extra tests on the audio source API we'll be interacting with
-- Make sure your iOS / Android devices have [developer mode (iOS)](https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device) / [Developer options and USB debugging (Android)](https://developer.android.com/studio/debug/dev-options) enabled 
+- Make sure your iOS / Android devices have [developer mode (iOS)](https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device) / [Developer options and USB debugging (Android)](https://developer.android.com/studio/debug/dev-options) enabled
 
 ## Test your setup before the workshop
 

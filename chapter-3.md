@@ -1,6 +1,6 @@
-# Module 3
+# Chapter 3
 
-In the third module, you'll extend your audio route detector to handle real-time updates. You'll add native event support so your app can respond automatically when the audio route changes — for example, when you plug in headphones or connect a Bluetooth speaker. You'll plan the event API, implement the listener logic in both Swift and Kotlin, and wire it up to React using event subscriptions.
+In the third chapter, you'll extend your audio route detector to handle real-time updates. You'll add native event support so your app can respond automatically when the audio route changes — for example, when you plug in headphones or connect a Bluetooth speaker. You'll plan the event API, implement the listener logic in both Swift and Kotlin, and wire it up to React using event subscriptions.
 
 ### Goals
 
@@ -21,7 +21,7 @@ In the third module, you'll extend your audio route detector to handle real-time
 
 The first part of our module is now ready, and we can now query for the current audio route. In this exercise, we'll define the event types that will allow our module to notify JavaScript when the audio route changes.
 
-Just as in Module 2, we'll start by defining the API that we would like to expose. We've already defined the available audio routes, so now we'll add the event payloads and the shape of the events our module will emit.
+Just as in Chapter 2, we'll start by defining the API that we would like to expose. We've already defined the available audio routes, so now we'll add the event payloads and the shape of the events our module will emit.
 
 ### Tasks
 
@@ -462,7 +462,7 @@ const sub = ExpoAudioRoute.addListener("onAudioRouteChange", ({ route }) => {
 
 > [!NOTE]
 >
-> 👀 **Try it:** Unlike Module 2 where you had to press a button to check the route, now the app automatically responds to audio route changes in real-time! This is the power of event-driven architecture.
+> 👀 **Try it:** Unlike Chapter 2 where you had to press a button to check the route, now the app automatically responds to audio route changes in real-time! This is the power of event-driven architecture.
 >
 > https://github.com/user-attachments/assets/554a7129-ed13-4e41-b92e-d0df14414a8a
 
@@ -549,4 +549,4 @@ export default function App() {
 
 ## Next exercise
 
-[Module 4 👉](./module-4.md)
+[Chapter 4 👉](./chapter-4.md)
