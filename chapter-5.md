@@ -104,9 +104,9 @@ export { useAudioRoute } from "./src/ExpoAudioRouteModule";
 
 Expo Modules provides special [protocols](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/) (`ExpoSwiftUI.View` and `ExpoSwiftUI.ViewProps`) that allow SwiftUI views to be used as React Native components. A bridged SwiftUI view will typically make use of the following:
 
- - A props class: This will define properties that can be set from React (like `options` and `selectedIndex`)
- - A view struct: This will contain the actual SwiftUI view and rendering logic
- - An `EventDispatcher`: This allows the native view to call back to JavaScript
+- A props class: This will define properties that can be set from React (like `options` and `selectedIndex`)
+- A view struct: This will contain the actual SwiftUI view and rendering logic
+- An `EventDispatcher`: This allows the native view to call back to JavaScript
 
 ### Tasks
 
@@ -294,9 +294,9 @@ If you tap on a segment, you should see a log in your terminal showing the `inde
 
 Similar to how we bridged SwiftUI, Expo Modules provides `ExpoComposeView` and `ComposeProps` to bridge Jetpack Compose views to React Native. A bridged Jetpack Compose view will typically make use of
 
- - A props data class: This will define properties that can be set from React (like `options` and `selectedIndex`)
- - A view class: This will contain the actual Jetpack Compose view and rendering logic within a `Content` method marked with `@Composable`
-  - An `EventDispatcher`: This allows the native view to call back to JavaScript
+- A props data class: This will define properties that can be set from React (like `options` and `selectedIndex`)
+- A view class: This will contain the actual Jetpack Compose view and rendering logic within a `Content` method marked with `@Composable`
+- An `EventDispatcher`: This allows the native view to call back to JavaScript
 
 ### Tasks
 
@@ -306,9 +306,9 @@ First, we need to make a few changes to our module's `build.gradle` so that we c
 
 Unlike SwiftUI which comes with iOS, Jetpack Compose is a separate library that needs to be explicitly added as a dependency. We'll need to:
 
- - Enable the Compose compiler plugin
- - Enable Compose in the build features
- - Add the Compose library dependencies
+- Enable the Compose compiler plugin
+- Enable Compose in the build features
+- Add the Compose library dependencies
 
 <details>
 <summary>Groovy</summary>
