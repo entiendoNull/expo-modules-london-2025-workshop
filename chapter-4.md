@@ -455,7 +455,7 @@ const { route } = useAudioRouteChangedEvent();
 
 This flexibility makes your module accessible for different coding styles and use cases.
 
-## Exercise 2: Add web fallback support
+## Bonus Exercise: Add web fallback support
 
 If your module doesn't support a specific platform (or can't support it due to platform limitations), it's good practice to provide a fallback implementation. This prevents crashes and provides a graceful degradation experience.
 
