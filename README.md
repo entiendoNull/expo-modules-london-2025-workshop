@@ -1,5 +1,10 @@
 # React Native London 2025: Expo Modules Workshop
 
+## End-of-chapter dev build links
+
+- End of chapter 1:
+  - [Android](https://expo.dev/accounts/expo-production/projects/expo-custom-local-module-example/builds/a1813656-09d9-456e-9dfc-3c0e40598598)
+  - [iOS](https://expo.dev/artifacts/eas/pyRMDbx9yQs8EBtrEneA5k.tar.gz)
 ## How to use this repo
 
 1. Start at the first chapter by opening up the file called **chapter-1.md**.
