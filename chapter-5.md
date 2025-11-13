@@ -18,7 +18,7 @@ In this chapter, we'll learn how to create a native view for iOS (using SwiftUI)
 
 ## Exercise 1: Define the JavaScript API
 
-Just like we did in Chapter 2, let's begin by defining the JavaScript API for our view component. We'll do this by adding types and the native binding to our Expo Module.
+Just like we did in previous chapters, let's begin by defining the JavaScript API for our view component. We'll do this by adding types and the native binding to our Expo Module.
 
 ### Tasks
 

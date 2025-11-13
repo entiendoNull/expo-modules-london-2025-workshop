@@ -160,7 +160,9 @@ This method registers an observer that watches for route change notifications fr
 
 **File:** `modules/expo-audio-route/android/src/main/java/expo/modules/audioroute/ExpoAudioRouteModule.kt`
 
-**2.1** Import import android.media.AudioDeviceInfo
+**2.1** Import android.media.AudioDeviceCallback
+
+We import this so we can later create a callback object that overrides two methods Android provides for tracking audio device changes. Those methods fire when devices are added or removed, and we'll use them in an upcoming step to react to audio-route updates.
 
 ```diff
 import expo.modules.kotlin.modules.Module

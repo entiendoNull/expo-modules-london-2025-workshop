@@ -48,7 +48,7 @@ npx expo install expo-dev-client
 
 #### 3. Create new Expo Module
 
-When prompted the name I’ll be using is `expo-audio-route`, and then I'll just go ahead and accept the suggestions for the subsequent prompts.
+When prompted the name we’ll be using is `expo-audio-route`, and then we'll just go ahead and accept the suggestions for the subsequent prompts.
 
 The `--local` flag creates a module that lives inside your project, instead of a standalone package that could be published to npm. It’s perfect when you just need custom native functionality for a specific app.
 

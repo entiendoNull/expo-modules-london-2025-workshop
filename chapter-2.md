@@ -12,7 +12,7 @@ You'll clean up the boilerplate from the previous exercise, plan a simple TypeSc
 
 ### Tasks
 
-- Clean up the boilerplate module from Module 1
+- Clean up the boilerplate module from Chapter 1
 - Plan and define the TypeScript API for an audio route detector
 - Implement native functionality in Swift and/or Kotlin
 - Build and test the module on a physical device and verify audio route detection with different audio outputs
@@ -302,7 +302,7 @@ public func definition() -> ModuleDefinition {
 
 #### 2.1 Imports
 
-Start by adding the necessary Android imports. We need `Context` to access system services, `AudioDeviceInfo` to identify audio device types, and `AudioManager` to query the audio routing information.
+Start by adding the necessary Android imports. We need `Context` to access system services _(e.g. AUDIO_SERVICE)_, `AudioDeviceInfo` to identify audio device types _(e.g. TYPE_WIRED_HEADPHONES, TYPE_BUILTIN_SPEAKER)_, and `AudioManager` to query the audio routing information.
 
 ```diff
 package expo.modules.audioroute
@@ -334,7 +334,7 @@ Initialize the `AudioManager` using the `OnCreate` lifecycle method _within_ you
 override fun definition() = ModuleDefinition {
   Name("ExpoAudioRoute")
 
-+ // App context is the Expo Module's API context that provices access to various system services. It's available automatically in all Expo modules that extend the Module class.
++ // App context is the Expo Module's API context that provides access to various system services. It's available automatically in all Expo modules that extend the Module class.
 + // The reactContext provides access to the system Android Context which is used for Android-specific operations.
 + OnCreate {
 +   audioManager = appContext.reactContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
