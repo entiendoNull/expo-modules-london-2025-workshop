@@ -5,7 +5,11 @@
 - End of chapter 1:
   - [Android](https://expo.dev/accounts/expo-production/projects/expo-custom-local-module-example/builds/a1813656-09d9-456e-9dfc-3c0e40598598)
   - [iOS](https://expo.dev/artifacts/eas/pyRMDbx9yQs8EBtrEneA5k.tar.gz)
+- End of chapter 2:
+  - [Android](https://expo.dev/accounts/expo-production/projects/expo-custom-local-module-example/builds/cf82883f-31c2-406d-8f78-b4e4afc4d3eb)
+  - [iOS](https://expo.dev/artifacts/eas/r1DnrBBYsRW6xAeJAHWD4v.tar.gz)
 ## How to use this repo
+
 
 1. Start at the first chapter by opening up the file called **chapter-1.md**.
 2. Proceed to **chapter-2.md**
