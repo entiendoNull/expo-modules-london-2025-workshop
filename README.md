@@ -8,6 +8,9 @@
 - End of chapter 2:
   - [Android](https://expo.dev/accounts/expo-production/projects/expo-custom-local-module-example/builds/cf82883f-31c2-406d-8f78-b4e4afc4d3eb)
   - [iOS](https://expo.dev/artifacts/eas/r1DnrBBYsRW6xAeJAHWD4v.tar.gz)
+- End of chapter 3:
+  - [Android](https://expo.dev/accounts/expo-production/projects/expo-custom-local-module-example/builds/982c0ee4-6b4d-4943-829a-a7137f313fe6)
+  - [iOS](https://expo.dev/artifacts/eas/d4VK7gqBxFL7bqQzvMW9g5.tar.gz)
 ## How to use this repo
 
 
